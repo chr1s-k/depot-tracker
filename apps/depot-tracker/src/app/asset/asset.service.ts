@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AssetEntity } from '../../../../api/src/asset/asset.entity';
 import { CreateAssetDto } from '@chris-k-software/api-interfaces';
 import { URLS } from '@chris-k-software/api-interfaces';
+import { AssetEntity } from '../../../../api/src/asset/asset.entity';
 
 @Injectable({
   providedIn: 'root',

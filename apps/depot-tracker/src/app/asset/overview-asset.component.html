@@ -18,10 +18,18 @@
   <ng-container [matColumnDef]="'actions'">
     <th mat-header-cell *matHeaderCellDef mat-sort-header i18n></th>
     <td mat-cell *matCellDef="let element">
-      <button mat-icon-button aria-label="Button to add transaction to asset">
+      <button
+        (click)="addTransactionToAsset(element)"
+        mat-icon-button
+        aria-label="Button to add transaction to asset"
+      >
         <mat-icon>add_task</mat-icon>
       </button>
-      <button mat-icon-button aria-label="Button to remove asset">
+      <button
+        (click)="removeAsset(element)"
+        mat-icon-button
+        aria-label="Button to remove asset"
+      >
         <mat-icon>remove_circle</mat-icon>
       </button>
     </td>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ASSET_ROUTE_PATHS } from '../asset/asset.routes.constants';
 
@@ -6,6 +6,7 @@ import { ASSET_ROUTE_PATHS } from '../asset/asset.routes.constants';
   selector: 'cs-topbar',
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopbarComponent implements OnInit {
   constructor(private router: Router) {}

@@ -28,14 +28,14 @@ export class AssetController {
     return this.assetService.create(createAssetDto);
   }
 
-  @Delete()
+  @Delete(URLS.assetDeleteV1)
   @UsePipes(ValidationPipe)
   delete(@Query('id', ParseIntPipe) id: AssetId): Promise<DeleteResult> {
     this.log.verbose(`Deleting asset with id ${id}`);
     return this.assetService.delete(id);
   }
 
-  @Get(URLS.assetCreateV1)
+  @Get(URLS.assetGetAllV1)
   @UsePipes(ValidationPipe)
   getAll(): Promise<AssetEntity[]> {
     this.log.verbose(`Getting all assets.`);

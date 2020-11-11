@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { IAsset } from '@chris-k-software/api-interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AssetService } from './asset.service';
@@ -13,6 +13,7 @@ interface CsInputDefinition {
   selector: 'cs-create-asset',
   templateUrl: './create-asset.component.html',
   styleUrls: ['./create-asset.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateAssetComponent implements OnInit {
   constructor(private assetService: AssetService) {}

@@ -8,6 +8,7 @@ import { LayoutModule } from './layout/layout.module';
 import { RouterModule } from '@angular/router';
 import { AssetModule } from './asset/asset.module';
 import { assetRoutes } from './asset/asset.routes';
+import { transactionRoutes } from './transaction/transaction.routes';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +18,7 @@ import { assetRoutes } from './asset/asset.routes';
     BrowserAnimationsModule,
     LayoutModule,
     AssetModule,
-    RouterModule.forRoot([...assetRoutes]),
+    RouterModule.forRoot([...assetRoutes, ...transactionRoutes]),
   ],
   providers: [],
   bootstrap: [AppComponent],

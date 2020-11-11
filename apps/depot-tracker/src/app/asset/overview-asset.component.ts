@@ -1,10 +1,17 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSort, Sort } from '@angular/material/sort';
 import { AssetService } from './asset.service';
 import { AssetEntity } from '../../../../api/src/asset/asset.entity';
 import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { IAsset } from '@chris-k-software/api-interfaces';
+import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
 
 interface OverviewColumn {
   displayName: string;
@@ -16,6 +23,7 @@ interface OverviewColumn {
   selector: 'cs-overview-asset',
   templateUrl: './overview-asset.component.html',
   styleUrls: ['./overview-asset.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewAssetComponent implements OnInit, AfterViewInit {
   constructor(private assetService: AssetService, private router: Router) {}
@@ -81,5 +89,14 @@ export class OverviewAssetComponent implements OnInit, AfterViewInit {
     }
     this.data.sort(sortFct);
     this.data = [...this.data];
+  }
+
+  addTransactionToAsset(asset: AssetEntity) {
+    console.log(asset);
+    this.router.navigate([TRANSACTION_ROUTE_PATHS.transactionCreate]);
+  }
+
+  removeAsset(asset: AssetEntity) {
+    console.log(asset);
   }
 }
