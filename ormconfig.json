@@ -1,0 +1,24 @@
+{
+   "type": "mysql",
+   "host": "localhost",
+   "port": 3306,
+   "username": "root",
+   "password": "root",
+   "database": "depot",
+   "synchronize": true,
+   "logging": false,
+   "entities": [
+      "apps/api/src/entity/**/*.ts"
+   ],
+   "migrations": [
+      "apps/api/src/migration/**/*.ts"
+   ],
+   "subscribers": [
+      "apps/api/src/subscriber/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "apps/api/src/entity",
+      "migrationsDir": "apps/api/src/migration",
+      "subscribersDir": "apps/api/src/subscriber"
+   }
+}

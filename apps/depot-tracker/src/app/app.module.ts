@@ -3,10 +3,22 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LayoutModule } from './layout/layout.module';
+import { RouterModule } from '@angular/router';
+import { AssetModule } from './asset/asset.module';
+import { assetRoutes } from './asset/asset.routes';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    LayoutModule,
+    AssetModule,
+    RouterModule.forRoot([...assetRoutes]),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

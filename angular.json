@@ -10,7 +10,7 @@
       },
       "root": "apps/depot-tracker",
       "sourceRoot": "apps/depot-tracker/src",
-      "prefix": "chris-k-software",
+      "prefix": "cs",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -25,7 +25,10 @@
               "apps/depot-tracker/src/favicon.ico",
               "apps/depot-tracker/src/assets"
             ],
-            "styles": ["apps/depot-tracker/src/styles.scss"],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/depot-tracker/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {

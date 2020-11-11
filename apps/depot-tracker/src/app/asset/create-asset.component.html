@@ -1,0 +1,21 @@
+<form [formGroup]="form" style="padding: 12px;">
+  <ng-container *ngFor="let entry of fields | keyvalue: keepKeyOrder">
+    <mat-form-field *ngIf="entry.value as field" style="padding: 12px;">
+      <mat-label i18n>{{ field.name }}</mat-label>
+      <input [formControl]="field.control" matInput />
+      <mat-error i18n *ngIf="field.control.touched && !field.control.valid">{{
+        field.errorInfo
+      }}</mat-error>
+    </mat-form-field>
+  </ng-container>
+  <button
+    style="margin: 12px; float: right;"
+    mat-flat-button
+    color="primary"
+    i18n
+    [disabled]="form.invalid"
+    (click)="onCreateAsset()"
+  >
+    Save Asset
+  </button>
+</form>
