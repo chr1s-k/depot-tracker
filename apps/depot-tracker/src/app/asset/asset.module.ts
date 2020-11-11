@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { OverviewAssetComponent } from './overview-asset.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [CreateAssetComponent, OverviewAssetComponent],
@@ -20,6 +21,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatButtonModule,
     MatTableModule,
     MatSortModule,
+    MatIconModule,
   ],
 })
 export class AssetModule {}

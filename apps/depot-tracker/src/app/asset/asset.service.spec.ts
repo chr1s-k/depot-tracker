@@ -39,9 +39,10 @@ describe('AssetService', () => {
     };
     service.create(createAssetDto).subscribe();
     const reqs = httpTestingController.match((req) =>
-      req.url.includes('create')
+      req.url.includes('ckdepot/v1/asset')
     );
     expect(reqs).toHaveLength(1);
+    expect(reqs[0].request.method).toEqual('POST');
     expect(reqs[0].request.body).toEqual(createAssetDto);
   });
 });

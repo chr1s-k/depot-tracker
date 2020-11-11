@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { AssetService } from './asset.service';
 import { AssetEntity } from '../../../../api/src/asset/asset.entity';
 import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
@@ -17,8 +17,11 @@ interface OverviewColumn {
   templateUrl: './overview-asset.component.html',
   styleUrls: ['./overview-asset.component.scss'],
 })
-export class OverviewAssetComponent implements OnInit {
+export class OverviewAssetComponent implements OnInit, AfterViewInit {
   constructor(private assetService: AssetService, private router: Router) {}
+
+  @ViewChild(MatSort) sort: MatSort;
+  data: AssetEntity[];
 
   columns: Record<keyof IAsset | 'id', OverviewColumn> = {
     description: {
@@ -38,16 +41,6 @@ export class OverviewAssetComponent implements OnInit {
     wkn: { displayName: 'Wkn', visible: true, order: 6 },
   };
 
-  displayedColumns(): string[] {
-    return Object.entries(this.columns)
-      .filter((columnEntry) => columnEntry[1].visible)
-      .sort((a, b) => a[1].order - b[1].order)
-      .map((columnEntry) => columnEntry[0]);
-  }
-
-  @ViewChild(MatSort) sort: MatSort;
-  data: AssetEntity[];
-
   ngOnInit(): void {
     this.assetService.getAll().subscribe((data) => {
       console.log('data', data);
@@ -55,7 +48,38 @@ export class OverviewAssetComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.sort.sortChange.subscribe((sort: Sort) => this.sortData(sort));
+  }
+
+  displayedColumns(): string[] {
+    const displayedDataColumns = Object.entries(this.columns)
+      .filter((columnEntry) => columnEntry[1].visible)
+      .sort((a, b) => a[1].order - b[1].order)
+      .map((columnEntry) => columnEntry[0]);
+    return displayedDataColumns.concat(['actions']);
+  }
+
   navigateToAssetCreate() {
     this.router.navigate([ASSET_ROUTE_PATHS.assetCreate]);
+  }
+
+  private sortData(sort: Sort): void {
+    let sortFct: (a, b) => -1 | 1 | 0;
+    if (sort.direction === 'asc') {
+      sortFct = (a, b) => {
+        if (a[sort.active] === b[sort.active]) return 0;
+        return a[sort.active] > b[sort.active] ? 1 : -1;
+      };
+    } else if (sort.direction === 'desc') {
+      sortFct = (a, b) => {
+        if (a[sort.active] === b[sort.active]) return 0;
+        return a[sort.active] > b[sort.active] ? -1 : 1;
+      };
+    } else {
+      sortFct = () => 0;
+    }
+    this.data.sort(sortFct);
+    this.data = [...this.data];
   }
 }

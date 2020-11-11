@@ -4,6 +4,8 @@ import { TopbarComponent } from './topbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -11,7 +13,13 @@ describe('TopbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatToolbarModule, MatIconModule, MatButtonModule],
+      imports: [
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatMenuModule,
+        RouterTestingModule,
+      ],
       declarations: [TopbarComponent],
     }).compileComponents();
   });
