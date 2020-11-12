@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { IAsset } from '@chris-k-software/api-interfaces';
+import { CreateAssetDto } from '@chris-k-software/api-interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AssetService } from './asset.service';
 import { Location } from '@angular/common';
 
 interface CsInputDefinition {
   control: FormControl;
-  name: string;
+  displayName: string;
   errorInfo: string;
 }
 
@@ -20,42 +20,42 @@ export class CreateAssetComponent implements OnInit {
   constructor(private assetService: AssetService, private location: Location) {}
 
   form: FormGroup;
-  readonly fields: Record<keyof IAsset, CsInputDefinition> = {
+  readonly fields: Record<keyof CreateAssetDto, CsInputDefinition> = {
     name: {
       control: new FormControl('', [Validators.required]),
-      name: 'Name',
+      displayName: 'Name',
       errorInfo: 'Please choose something useful',
     },
     description: {
       control: new FormControl('', [Validators.required]),
-      name: 'Description',
+      displayName: 'Description',
       errorInfo: 'Please choose something useful',
     },
     location: {
       control: new FormControl('', [Validators.required]),
-      name: 'Location',
+      displayName: 'Location',
       errorInfo: 'Please choose something useful',
     },
     risk: {
       control: new FormControl('', [Validators.required]),
-      name: 'Risk',
+      displayName: 'Risk',
       errorInfo: 'Please choose something useful',
     },
     isin: {
       control: new FormControl('', [Validators.required]),
-      name: 'Isin',
+      displayName: 'Isin',
       errorInfo: 'Please choose something useful',
     },
     wkn: {
       control: new FormControl('', [Validators.required]),
-      name: 'Wkn',
+      displayName: 'Wkn',
       errorInfo: 'Please choose something useful',
     },
   };
 
   ngOnInit(): void {
     this.form = new FormGroup(this.mapFieldsToControls());
-    this.form.valueChanges.subscribe((value: IAsset) => {
+    this.form.valueChanges.subscribe((value: CreateAssetDto) => {
       console.log(value);
     });
   }

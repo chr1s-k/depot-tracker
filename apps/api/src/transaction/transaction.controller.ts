@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Logger,
   ParseIntPipe,
   Post,
@@ -13,15 +12,15 @@ import {
 import { TransactionEntity } from './transaction.entity';
 import { TransactionService } from './transaction.service';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
-import { CreateTransactionDto } from '@chris-k-software/api-interfaces';
+import { CreateTransactionDto, URLS } from '@chris-k-software/api-interfaces';
 import type { AssetId } from '@chris-k-software/api-interfaces';
 
-@Controller('v1/transaction')
+@Controller()
 export class TransactionController {
   private log = new Logger('TransactionController');
   constructor(private transactionService: TransactionService) {}
 
-  @Post()
+  @Post(URLS.transactionCreateV1)
   @UsePipes(ValidationPipe)
   create(
     @Body() createTransactionDto: CreateTransactionDto
@@ -32,17 +31,10 @@ export class TransactionController {
     return this.transactionService.create(createTransactionDto);
   }
 
-  @Delete()
+  @Delete(URLS.transactionDeleteV1)
   @UsePipes(ValidationPipe)
   delete(@Query('id', ParseIntPipe) id: AssetId): Promise<DeleteResult> {
     this.log.verbose(`Deleting transaction with id ${id}`);
     return this.transactionService.delete(id);
-  }
-
-  @Get()
-  @UsePipes(ValidationPipe)
-  getAll(): Promise<TransactionEntity[]> {
-    this.log.verbose(`Getting all transactions.`);
-    return this.transactionService.getAll();
   }
 }

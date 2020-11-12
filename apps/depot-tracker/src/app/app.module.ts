@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { AssetModule } from './asset/asset.module';
 import { assetRoutes } from './asset/asset.routes';
 import { transactionRoutes } from './transaction/transaction.routes';
+import { TransactionModule } from './transaction/transaction.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +19,7 @@ import { transactionRoutes } from './transaction/transaction.routes';
     BrowserAnimationsModule,
     LayoutModule,
     AssetModule,
+    TransactionModule,
     RouterModule.forRoot([...assetRoutes, ...transactionRoutes]),
   ],
   providers: [],

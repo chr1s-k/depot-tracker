@@ -1,4 +1,4 @@
-import { IsDefined, IsPositive } from 'class-validator';
+import { IsNumber, IsPositive } from 'class-validator';
 import type { AssetId } from './api-asset-interface';
 
 export interface ITransaction {
@@ -7,6 +7,7 @@ export interface ITransaction {
   unitCount: UnitCount;
 }
 
+export type TransactionId = number;
 export type Fee = number;
 export type UnitPrice = number;
 export type UnitCount = number;
@@ -14,11 +15,11 @@ export type UnitCount = number;
 export class CreateTransactionDto implements ITransaction {
   @IsPositive()
   assetId: AssetId;
-  @IsDefined()
+  @IsNumber()
   fee: Fee;
   @IsPositive()
   unitCount: UnitCount;
-  @IsDefined()
+  @IsNumber()
   unitPrice: UnitPrice;
 }
 

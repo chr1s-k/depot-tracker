@@ -121,4 +121,14 @@ export class OverviewAssetComponent
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
+
+  addTransaction(asset: AssetEntity) {
+    this.router.navigateByUrl(
+      ASSET_ROUTE_PATHS.asset +
+        '/' +
+        asset.id +
+        '/' +
+        TRANSACTION_ROUTE_PATHS.transactionCreate
+    );
+  }
 }

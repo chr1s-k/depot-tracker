@@ -19,11 +19,18 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header i18n></th>
     <td mat-cell *matCellDef="let element">
       <button
-        (click)="goToAssetTransaction(element)"
+        (click)="addTransaction(element)"
         mat-icon-button
         aria-label="Button to add transaction to asset"
       >
-        <mat-icon>add_task</mat-icon>
+        <mat-icon>add_box</mat-icon>
+      </button>
+      <button
+        (click)="goToAssetTransaction(element)"
+        mat-icon-button
+        aria-label="Button to see all transactions for asset"
+      >
+        <mat-icon>list</mat-icon>
       </button>
       <button
         (click)="removeAsset(element)"

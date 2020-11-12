@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ITransaction } from '@chris-k-software/api-interfaces';
 import { Router } from '@angular/router';
 import { TransactionService } from './transaction.service';
 import { TransactionEntity } from '../../../../api/src/transaction/transaction.entity';
+import { MatSort } from '@angular/material/sort';
+import { Subscription } from 'rxjs';
 
 interface OverviewTransactionColumn {
   displayName: string;
@@ -21,6 +23,7 @@ export class OverviewTransactionComponent implements OnInit {
     private router: Router
   ) {}
 
+  @ViewChild(MatSort) sort: MatSort;
   data: TransactionEntity[];
 
   readonly columns: Record<
@@ -36,6 +39,8 @@ export class OverviewTransactionComponent implements OnInit {
     unitCount: { displayName: 'Unit count', visible: true, order: 2 },
     unitPrice: { displayName: 'Unit price', visible: true, order: 3 },
   };
+
+  subscriptions: Subscription[] = [];
 
   ngOnInit(): void {}
 
