@@ -1,4 +1,4 @@
 export const ASSET_ROUTE_PATHS = {
+  asset: 'asset',
   assetCreate: 'asset/create',
-  assetOverview: 'asset/overview',
 };

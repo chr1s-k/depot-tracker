@@ -15,6 +15,6 @@ export class TopbarComponent implements OnInit {
   ngOnInit(): void {}
 
   navigateToAssetOverview() {
-    this.router.navigate([ASSET_ROUTE_PATHS.assetOverview]);
+    this.router.navigate([ASSET_ROUTE_PATHS.asset]);
   }
 }

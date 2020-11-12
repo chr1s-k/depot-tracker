@@ -8,10 +8,10 @@ import {
 import { Router } from '@angular/router';
 import { MatSort, Sort } from '@angular/material/sort';
 import { AssetService } from './asset.service';
-import { AssetEntity } from '../../../../api/src/asset/asset.entity';
 import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { IAsset } from '@chris-k-software/api-interfaces';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
+import { AssetEntity } from '../../../../api/src/asset/asset.entity';
 
 interface OverviewColumn {
   displayName: string;
@@ -92,8 +92,13 @@ export class OverviewAssetComponent implements OnInit, AfterViewInit {
   }
 
   addTransactionToAsset(asset: AssetEntity) {
-    console.log(asset);
-    this.router.navigate([TRANSACTION_ROUTE_PATHS.transactionCreate]);
+    this.router.navigateByUrl(
+      ASSET_ROUTE_PATHS.asset +
+        '/' +
+        asset.id +
+        '/' +
+        TRANSACTION_ROUTE_PATHS.transactionCreate
+    );
   }
 
   removeAsset(asset: AssetEntity) {

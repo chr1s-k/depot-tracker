@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TransactionComponent } from './transaction.component';
+import { CreateTransactionComponent } from './create-transaction.component';
 
 @NgModule({
-  declarations: [TransactionComponent],
+  declarations: [CreateTransactionComponent],
   imports: [CommonModule],
 })
 export class TransactionModule {}

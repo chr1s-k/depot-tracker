@@ -26,7 +26,7 @@ describe('Asset', () => {
       risk: 'risk',
     };
     return request(app.getHttpServer())
-      .post('/v1/asset')
+      .post('/ckdepot/v1/asset')
       .send(createAssetDto)
       .expect(HttpStatus.BAD_REQUEST)
       .expect(({ body }) => {
@@ -48,7 +48,7 @@ describe('Asset', () => {
       description: 'description',
     };
     return request(app.getHttpServer())
-      .post('/v1/asset')
+      .post('/ckdepot/v1/asset')
       .send(createAssetDto)
       .expect(HttpStatus.BAD_REQUEST)
       .expect(({ body }) => {
@@ -75,7 +75,7 @@ describe('Asset', () => {
       risk: 'risk',
     };
     return request(app.getHttpServer())
-      .post('/v1/asset')
+      .post('/ckdepot/v1/asset')
       .send(createAssetDto)
       .expect(HttpStatus.CREATED)
       .expect(({ body }) => {
@@ -88,7 +88,7 @@ describe('Asset', () => {
 
   it(`/GET asset`, () => {
     return request(app.getHttpServer())
-      .get('/v1/asset')
+      .get('/ckdepot/v1/asset')
       .expect(HttpStatus.OK)
       .expect(({ body }) => {
         expect(body).toBeInstanceOf(Array);
@@ -99,7 +99,7 @@ describe('Asset', () => {
   // TODO decouple test
   it(`/DELETE asset`, () => {
     return request(app.getHttpServer())
-      .delete(`/v1/asset?id=${id}`)
+      .delete(`/ckdepot/v1/asset?id=${id}`)
       .expect(HttpStatus.OK)
       .expect(({ body }) => {
         expect(body).toBeInstanceOf(Object);
