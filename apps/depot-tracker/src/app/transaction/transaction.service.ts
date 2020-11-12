@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
+
+  readonly prefix = 'api/';
 }

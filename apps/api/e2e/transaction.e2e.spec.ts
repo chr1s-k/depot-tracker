@@ -60,7 +60,7 @@ describe('Transaction', () => {
       });
   });
 
-  it(`/Post transactionDto with nnot existing asset id`, () => {
+  it(`/Post transactionDto with not existing asset id`, () => {
     const createTransactionDto: Partial<CreateTransactionDto> = {
       assetId: 999999,
       unitCount: 1,
@@ -84,7 +84,7 @@ describe('Transaction', () => {
 
   it(`/Post new transaction`, () => {
     const createTransactionDto: CreateTransactionDto = {
-      assetId: 3,
+      assetId: 1,
       fee: 0,
       unitCount: 1,
       unitPrice: 0,

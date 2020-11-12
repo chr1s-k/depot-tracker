@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { IAsset } from '@chris-k-software/api-interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AssetService } from './asset.service';
+import { Location } from '@angular/common';
 
 interface CsInputDefinition {
   control: FormControl;
@@ -16,7 +17,7 @@ interface CsInputDefinition {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateAssetComponent implements OnInit {
-  constructor(private assetService: AssetService) {}
+  constructor(private assetService: AssetService, private location: Location) {}
 
   form: FormGroup;
   readonly fields: Record<keyof IAsset, CsInputDefinition> = {
@@ -71,6 +72,9 @@ export class CreateAssetComponent implements OnInit {
   }
 
   onCreateAsset() {
-    this.assetService.create(this.form.value).subscribe(console.log);
+    this.assetService.create(this.form.value).subscribe(
+      () => this.location.back(),
+      (e) => console.error(e)
+    );
   }
 }

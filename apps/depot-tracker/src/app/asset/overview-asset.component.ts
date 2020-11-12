@@ -1,7 +1,9 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -12,6 +14,7 @@ import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { IAsset } from '@chris-k-software/api-interfaces';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
 import { AssetEntity } from '../../../../api/src/asset/asset.entity';
+import { Subscription } from 'rxjs';
 
 interface OverviewColumn {
   displayName: string;
@@ -25,13 +28,18 @@ interface OverviewColumn {
   styleUrls: ['./overview-asset.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverviewAssetComponent implements OnInit, AfterViewInit {
-  constructor(private assetService: AssetService, private router: Router) {}
+export class OverviewAssetComponent
+  implements OnInit, AfterViewInit, OnDestroy {
+  constructor(
+    private assetService: AssetService,
+    private router: Router,
+    private ref: ChangeDetectorRef
+  ) {}
 
   @ViewChild(MatSort) sort: MatSort;
-  data: AssetEntity[];
+  data: AssetEntity[] = [];
 
-  columns: Record<keyof IAsset | 'id', OverviewColumn> = {
+  readonly columns: Record<keyof IAsset | 'id', OverviewColumn> = {
     description: {
       displayName: 'Description',
       visible: true,
@@ -49,11 +57,16 @@ export class OverviewAssetComponent implements OnInit, AfterViewInit {
     wkn: { displayName: 'Wkn', visible: true, order: 6 },
   };
 
+  subscriptions: Subscription[] = [];
+
   ngOnInit(): void {
-    this.assetService.getAll().subscribe((data) => {
-      console.log('data', data);
-      this.data = data;
-    });
+    this.subscriptions.push(
+      this.assetService.assets$.subscribe((data) => {
+        this.data = data;
+        this.ref.markForCheck();
+      })
+    );
+    this.assetService.getAll().subscribe();
   }
 
   ngAfterViewInit(): void {
@@ -91,17 +104,21 @@ export class OverviewAssetComponent implements OnInit, AfterViewInit {
     this.data = [...this.data];
   }
 
-  addTransactionToAsset(asset: AssetEntity) {
+  goToAssetTransaction(asset: AssetEntity) {
     this.router.navigateByUrl(
       ASSET_ROUTE_PATHS.asset +
         '/' +
         asset.id +
         '/' +
-        TRANSACTION_ROUTE_PATHS.transactionCreate
+        TRANSACTION_ROUTE_PATHS.transaction
     );
   }
 
   removeAsset(asset: AssetEntity) {
-    console.log(asset);
+    this.assetService.delete(asset.id).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 }
