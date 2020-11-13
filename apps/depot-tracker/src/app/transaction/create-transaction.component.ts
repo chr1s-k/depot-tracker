@@ -69,7 +69,7 @@ export class CreateTransactionComponent implements OnInit {
     );
   }
 
-  onCreateTransaction() {
+  onSaveTransaction() {
     const newTransactionDto: CreateTransactionDto = {
       assetId: +this.fields.assetId.control.value,
       fee: +this.fields.fee.control.value,
@@ -77,7 +77,9 @@ export class CreateTransactionComponent implements OnInit {
       unitPrice: +this.fields.unitPrice.control.value,
     };
     this.transactionService.create(newTransactionDto).subscribe(
-      (newTransaction) => console.log(newTransaction),
+      () => {
+        this.location.back();
+      },
       (e) => console.error(e)
     );
   }

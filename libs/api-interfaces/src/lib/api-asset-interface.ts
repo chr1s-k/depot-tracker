@@ -1,4 +1,5 @@
 import { IsDefined, IsOptional, MinLength } from 'class-validator';
+import { TransactionDto } from './api-transaction-interface';
 
 export interface IAsset {
   name: Name;
@@ -7,6 +8,12 @@ export interface IAsset {
   location: Location;
   isin: Isin;
   wkn: Wkn;
+}
+
+export interface AssetDto extends IAsset {
+  id: AssetId;
+  created: Date;
+  transactions: TransactionDto[];
 }
 
 export type AssetId = number;

@@ -27,4 +27,10 @@ export const assetRoutes: Routes = [
     path: ASSET_ROUTE_PATHS.asset,
     component: OverviewAssetComponent,
   },
+  {
+    path: '',
+    redirectTo: ASSET_ROUTE_PATHS.asset,
+    pathMatch: 'full',
+  },
+  { path: '**', redirectTo: ASSET_ROUTE_PATHS.asset, pathMatch: 'full' },
 ];

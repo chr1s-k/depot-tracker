@@ -9,11 +9,10 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSort, Sort } from '@angular/material/sort';
-import { AssetService } from './asset.service';
+import { Asset, AssetService } from './asset.service';
 import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { IAsset } from '@chris-k-software/api-interfaces';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
-import { AssetEntity } from '../../../../api/src/asset/asset.entity';
 import { Subscription } from 'rxjs';
 
 interface OverviewColumn {
@@ -37,7 +36,7 @@ export class OverviewAssetComponent
   ) {}
 
   @ViewChild(MatSort) sort: MatSort;
-  data: AssetEntity[] = [];
+  data: Asset[] = [];
 
   readonly columns: Record<keyof IAsset | 'id', OverviewColumn> = {
     description: {
@@ -75,7 +74,7 @@ export class OverviewAssetComponent
 
   displayedColumns(): string[] {
     const displayedDataColumns = Object.entries(this.columns)
-      .filter((columnEntry) => columnEntry[1].visible)
+      .filter((column) => column[1].visible)
       .sort((a, b) => a[1].order - b[1].order)
       .map((columnEntry) => columnEntry[0]);
     return displayedDataColumns.concat(['actions']);
@@ -104,7 +103,7 @@ export class OverviewAssetComponent
     this.data = [...this.data];
   }
 
-  goToAssetTransaction(asset: AssetEntity) {
+  goToAssetTransaction(asset: Asset) {
     this.router.navigateByUrl(
       ASSET_ROUTE_PATHS.asset +
         '/' +
@@ -114,7 +113,7 @@ export class OverviewAssetComponent
     );
   }
 
-  removeAsset(asset: AssetEntity) {
+  removeAsset(asset: Asset) {
     this.assetService.delete(asset.id).subscribe();
   }
 
@@ -122,7 +121,7 @@ export class OverviewAssetComponent
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  addTransaction(asset: AssetEntity) {
+  addTransaction(asset: Asset) {
     this.router.navigateByUrl(
       ASSET_ROUTE_PATHS.asset +
         '/' +

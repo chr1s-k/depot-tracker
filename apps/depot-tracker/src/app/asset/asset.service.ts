@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AssetId, CreateAssetDto } from '@chris-k-software/api-interfaces';
+import {
+  AssetDto,
+  AssetId,
+  CreateAssetDto,
+  Description,
+  TransactionDto,
+} from '@chris-k-software/api-interfaces';
 import { URLS } from '@chris-k-software/api-interfaces';
-import { AssetEntity } from '../../../../api/src/asset/asset.entity';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
 import { map } from 'rxjs/operators';
 import clone from 'ramda/src/clone';
+import { isUndefined } from 'util';
 
 @Injectable({
   providedIn: 'root',
@@ -15,22 +21,22 @@ export class AssetService {
   constructor(private http: HttpClient) {}
   readonly prefix = 'api/';
 
-  private assets: AssetEntity[] = [];
-  private assetsSubject = new BehaviorSubject<AssetEntity[]>([]);
+  private assets: Asset[] = [];
+  private assetsSubject = new BehaviorSubject<Asset[]>([]);
   assets$ = this.assetsSubject.asObservable();
 
   private publishAssets() {
     this.assetsSubject.next(clone(this.assets));
-    console.log('this.assets', this.assets);
   }
 
-  create(createAssetDto: CreateAssetDto): Observable<AssetEntity> {
+  create(createAssetDto: CreateAssetDto): Observable<Asset> {
     const url = this.prefix + URLS.assetCreateV1;
-    return this.http.post<AssetEntity>(url, createAssetDto).pipe(
-      map((newAsset) => {
+    return this.http.post<AssetDto>(url, createAssetDto).pipe(
+      map((assetDto) => {
+        const newAsset = new Asset(assetDto);
         this.assets.push(newAsset);
         this.publishAssets();
-        return newAsset;
+        return clone(newAsset);
       })
     );
   }
@@ -51,14 +57,66 @@ export class AssetService {
       );
   }
 
-  getAll(): Observable<AssetEntity[]> {
+  getAll(): Observable<Asset[]> {
     const url = this.prefix + URLS.assetGetAllV1;
-    return this.http.get<AssetEntity[]>(url).pipe(
-      map((assets) => {
-        this.assets = assets;
+    return this.http.get<AssetDto[]>(url).pipe(
+      map((assetDtos) => {
+        this.assets = assetDtos.map((assetDto) => new Asset(assetDto));
         this.publishAssets();
-        return assets;
+        return clone(this.assets);
       })
+    );
+  }
+}
+
+export class Asset implements AssetDto {
+  description: Description = '';
+  id: AssetId = 0;
+  isin = '';
+  location = '';
+  name = '';
+  risk = '';
+  wkn = '';
+  created = new Date();
+  transactions: TransactionDto[];
+
+  constructor(assetDto: AssetDto) {
+    this.id = assetDto.id;
+    this.description = assetDto.description;
+    this.isin = assetDto.isin;
+    this.location = assetDto.location;
+    this.name = assetDto.name;
+    this.risk = assetDto.risk;
+    this.wkn = assetDto.wkn;
+    this.created = assetDto.created;
+    this.transactions = assetDto.transactions;
+  }
+
+  static sumFees(asset: Asset): number {
+    if (isUndefined(asset)) return -1;
+    const transactions = asset.transactions;
+    return transactions
+      .map((transaction) => transaction.fee)
+      .reduce((fee, sumFee) => {
+        return fee + sumFee;
+      }, 0);
+  }
+
+  static totalUnitCount(asset: Asset): number {
+    if (isUndefined(asset)) return -1;
+    const transactions = asset.transactions;
+    return transactions
+      .map((transaction) => transaction.unitCount)
+      .reduce((sumFee, fee) => sumFee + fee, 0);
+  }
+
+  static totalValue(asset: Asset): number {
+    if (isUndefined(asset)) return -1;
+    const transactions = asset.transactions;
+    return transactions.reduce(
+      (value, transaction) =>
+        value + transaction.unitCount * transaction.unitPrice,
+      0
     );
   }
 }

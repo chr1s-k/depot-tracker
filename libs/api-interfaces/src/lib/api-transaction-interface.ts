@@ -7,6 +7,11 @@ export interface ITransaction {
   unitCount: UnitCount;
 }
 
+export interface TransactionDto extends ITransaction {
+  id: TransactionId;
+  created: Date;
+}
+
 export type TransactionId = number;
 export type Fee = number;
 export type UnitPrice = number;
