@@ -25,7 +25,7 @@ describe('Transaction', () => {
       unitPrice: 0,
     };
     return request(app.getHttpServer())
-      .post('/v1/transaction')
+      .post('/ckdepot/v1/transaction')
       .send(createTransactionDto)
       .expect(HttpStatus.BAD_REQUEST)
       .expect(({ body }) => {
@@ -46,16 +46,14 @@ describe('Transaction', () => {
       unitPrice: 0,
     };
     return request(app.getHttpServer())
-      .post('/v1/transaction')
+      .post('/ckdepot/v1/transaction')
       .send(createTransactionDto)
       .expect(HttpStatus.BAD_REQUEST)
       .expect(({ body }) => {
         expect(body).toHaveProperty('message');
         expect(body.message).toBeInstanceOf(Array);
         expect(body.message.length).toEqual(1);
-        expect(body['message']).toContainEqual(
-          'fee should not be null or undefined'
-        );
+        expect(body['message']).toContainEqual('fee must not be less than 0');
         id = body.id;
       });
   });
@@ -68,7 +66,7 @@ describe('Transaction', () => {
       fee: 0,
     };
     return request(app.getHttpServer())
-      .post('/v1/transaction')
+      .post('/ckdepot/v1/transaction')
       .send(createTransactionDto)
       .expect(HttpStatus.NOT_FOUND)
       .expect(({ body }) => {
@@ -84,13 +82,13 @@ describe('Transaction', () => {
 
   it(`/Post new transaction`, () => {
     const createTransactionDto: CreateTransactionDto = {
-      assetId: 1,
+      assetId: 3,
       fee: 0,
       unitCount: 1,
       unitPrice: 0,
     };
     return request(app.getHttpServer())
-      .post('/v1/transaction')
+      .post('/ckdepot/v1/transaction')
       .send(createTransactionDto)
       .expect(HttpStatus.CREATED)
       .expect(({ body }) => {
@@ -101,20 +99,10 @@ describe('Transaction', () => {
       });
   });
 
-  it(`/GET transactions`, () => {
-    return request(app.getHttpServer())
-      .get('/v1/transaction')
-      .expect(HttpStatus.OK)
-      .expect(({ body }) => {
-        expect(body).toBeInstanceOf(Array);
-        expect(body.length).toBeGreaterThanOrEqual(1);
-      });
-  });
-
   // TODO decouple test
   it(`/DELETE transaction`, () => {
     return request(app.getHttpServer())
-      .delete(`/v1/transaction?id=${id}`)
+      .delete(`/ckdepot/v1/transaction?id=${id}`)
       .expect(HttpStatus.OK)
       .expect(({ body }) => {
         expect(body).toBeInstanceOf(Object);

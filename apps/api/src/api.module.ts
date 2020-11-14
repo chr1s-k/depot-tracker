@@ -13,7 +13,7 @@ import { AssetModule } from './asset/asset.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'root',
+      password: process.env.DEPOT_TRACKER_MY_SQL_PW,
       database: 'depot',
       //TODO Dont use in production!
       synchronize: true,
