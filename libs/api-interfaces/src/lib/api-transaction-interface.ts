@@ -24,7 +24,7 @@ export class CreateTransactionDto implements ITransaction {
   fee: Fee;
   @IsNumber()
   unitCount: UnitCount;
-  @IsPositive()
+  @Min(0)
   unitPrice: UnitPrice;
 }
 

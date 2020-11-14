@@ -26,7 +26,6 @@ describe('TransactionController', () => {
 
   it('should have methods', () => {
     expect(controller).toHaveProperty('create');
-    expect(controller).toHaveProperty('getAll');
     expect(controller).toHaveProperty('delete');
     expect(controller).toHaveProperty('log');
   });
