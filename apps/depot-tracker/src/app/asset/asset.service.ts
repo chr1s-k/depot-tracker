@@ -80,6 +80,10 @@ export class Asset implements AssetDto {
   created = new Date();
   transactions: TransactionDto[];
 
+  fees = 0;
+  value = 0;
+  unitCount = 0;
+
   constructor(assetDto: AssetDto) {
     this.id = assetDto.id;
     this.description = assetDto.description;
@@ -90,9 +94,12 @@ export class Asset implements AssetDto {
     this.wkn = assetDto.wkn;
     this.created = assetDto.created;
     this.transactions = assetDto.transactions;
+    this.fees = Asset.calcFees(this);
+    this.value = Asset.calcValue(this);
+    this.unitCount = Asset.calcUnitCount(this);
   }
 
-  static sumFees(asset: Asset): number {
+  static calcFees(asset: Asset): number {
     if (isUndefined(asset)) return -1;
     const transactions = asset.transactions;
     return transactions
@@ -102,7 +109,7 @@ export class Asset implements AssetDto {
       }, 0);
   }
 
-  static totalUnitCount(asset: Asset): number {
+  static calcUnitCount(asset: Asset): number {
     if (isUndefined(asset)) return -1;
     const transactions = asset.transactions;
     return transactions
@@ -110,7 +117,7 @@ export class Asset implements AssetDto {
       .reduce((sumFee, fee) => sumFee + fee, 0);
   }
 
-  static totalValue(asset: Asset): number {
+  static calcValue(asset: Asset): number {
     if (isUndefined(asset)) return -1;
     const transactions = asset.transactions;
     return transactions.reduce(

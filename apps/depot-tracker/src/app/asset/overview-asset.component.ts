@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { MatSort, Sort } from '@angular/material/sort';
 import { Asset, AssetService } from './asset.service';
 import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
-import { IAsset } from '@chris-k-software/api-interfaces';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
 import { Subscription } from 'rxjs';
 
@@ -19,6 +18,7 @@ interface OverviewColumn {
   displayName: string;
   visible: boolean;
   order: number;
+  fct?: (asset: Asset) => number;
 }
 
 @Component({
@@ -38,7 +38,12 @@ export class OverviewAssetComponent
   @ViewChild(MatSort) sort: MatSort;
   data: Asset[] = [];
 
-  readonly columns: Record<keyof IAsset | 'id', OverviewColumn> = {
+  subscriptions: Subscription[] = [];
+
+  readonly columns: Record<
+    Exclude<keyof Asset, 'transactions'>,
+    OverviewColumn
+  > = {
     description: {
       displayName: 'Description',
       visible: true,
@@ -46,7 +51,7 @@ export class OverviewAssetComponent
     },
     id: {
       displayName: 'Id',
-      visible: true,
+      visible: false,
       order: 0,
     },
     isin: { displayName: 'Isin', visible: true, order: 5 },
@@ -54,9 +59,46 @@ export class OverviewAssetComponent
     name: { displayName: 'Name', visible: true, order: 1 },
     risk: { displayName: 'Risk', visible: true, order: 4 },
     wkn: { displayName: 'Wkn', visible: true, order: 6 },
+    value: {
+      displayName: 'Value',
+      visible: true,
+      order: 7,
+    },
+    fees: {
+      displayName: 'Fee',
+      visible: true,
+      order: 8,
+    },
+    unitCount: {
+      displayName: 'Unit count',
+      visible: true,
+      order: 9,
+    },
+    created: {
+      displayName: 'Created',
+      visible: false,
+      order: 10,
+    },
   };
 
-  subscriptions: Subscription[] = [];
+  displayedColumns(): string[] {
+    const displayedDataColumns = Object.entries(this.columns)
+      .filter((column) => column[1].visible)
+      .sort((a, b) => a[1].order - b[1].order)
+      .map((columnEntry) => columnEntry[0]);
+    return displayedDataColumns.concat(['actions']);
+  }
+
+  totalValueFor(key: keyof Asset & ('fees' | 'value' | 'unitCount')) {
+    if (key === 'value' || key === 'fees' || key === 'unitCount') {
+      return this.data
+        .map((asset) => asset[key])
+        .reduce((acc, val) => acc + val, 0)
+        .toString();
+    } else {
+      return '';
+    }
+  }
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -70,14 +112,6 @@ export class OverviewAssetComponent
 
   ngAfterViewInit(): void {
     this.sort.sortChange.subscribe((sort: Sort) => this.sortData(sort));
-  }
-
-  displayedColumns(): string[] {
-    const displayedDataColumns = Object.entries(this.columns)
-      .filter((column) => column[1].visible)
-      .sort((a, b) => a[1].order - b[1].order)
-      .map((columnEntry) => columnEntry[0]);
-    return displayedDataColumns.concat(['actions']);
   }
 
   navigateToAssetCreate() {

@@ -25,6 +25,8 @@ export class TransactionEntity extends BaseEntity implements ITransaction {
   @Column()
   unitCount: number;
 
-  @ManyToOne(() => AssetEntity, (asset) => asset.transactions)
+  @ManyToOne(() => AssetEntity, (asset) => asset.transactions, {
+    onDelete: 'CASCADE',
+  })
   asset: AssetEntity;
 }
