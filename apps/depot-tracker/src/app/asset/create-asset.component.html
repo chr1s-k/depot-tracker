@@ -1,7 +1,9 @@
 <form [formGroup]="form" style="padding: 12px;">
   <ng-container *ngFor="let entry of fields | keyvalue: keepKeyOrder">
     <mat-form-field
-      *ngIf="entry.value.type === inputType.INPUT && entry.value as field"
+      *ngIf="
+        entry.value.element.type === inputType.INPUT && entry.value as field
+      "
       style="padding: 12px;"
     >
       <mat-label i18n>{{ field.displayName }}</mat-label>
@@ -14,13 +16,19 @@
     </mat-form-field>
 
     <mat-form-field
-      *ngIf="entry.value.type === inputType.DROPDOWN && entry.value as field"
+      *ngIf="
+        entry.value.element.type === inputType.DROPDOWN && entry.value as field
+      "
       appearance="legacy"
+      style="padding: 12px;"
     >
       <mat-label>{{ field.displayName }}</mat-label>
       <mat-select [formControl]="field.control">
-        <mat-option *ngFor="let risk of riskDropdown" [value]="risk.value">
-          {{ risk.value }}
+        <mat-option
+          *ngFor="let entry of field.element.entries"
+          [value]="entry.value"
+        >
+          {{ entry.value }}
         </mat-option>
       </mat-select>
     </mat-form-field>

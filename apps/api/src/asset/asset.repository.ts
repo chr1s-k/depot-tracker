@@ -5,7 +5,15 @@ import { CreateAssetDto } from '@chris-k-software/api-interfaces';
 @EntityRepository(AssetEntity)
 export class AssetRepository extends Repository<AssetEntity> {
   async createAsset(createAssetDto: CreateAssetDto) {
-    const { name, description, isin, wkn, location, risk } = createAssetDto;
+    const {
+      name,
+      description,
+      isin,
+      wkn,
+      location,
+      risk,
+      type,
+    } = createAssetDto;
     const assetEntity = new AssetEntity();
     assetEntity.created = new Date();
     assetEntity.name = name;
@@ -13,6 +21,7 @@ export class AssetRepository extends Repository<AssetEntity> {
     assetEntity.risk = risk;
     assetEntity.isin = isin;
     assetEntity.wkn = wkn;
+    assetEntity.type = type;
     assetEntity.location = location;
     assetEntity.transactions = [];
     await assetEntity.save();

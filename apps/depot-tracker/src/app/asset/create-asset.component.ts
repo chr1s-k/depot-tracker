@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { CreateAssetDto, Risk } from '@chris-k-software/api-interfaces';
+import {
+  AssetType,
+  CreateAssetDto,
+  Risk,
+} from '@chris-k-software/api-interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AssetService } from './asset.service';
 import { Location } from '@angular/common';
@@ -13,11 +17,22 @@ interface CsInputDefinition {
   control: FormControl;
   displayName: string;
   errorInfo?: string;
-  type: INPUT_TYPE;
+  element:
+    | {
+        type: INPUT_TYPE.DROPDOWN;
+        entries: { value: string }[];
+      }
+    | {
+        type: INPUT_TYPE.INPUT;
+      };
 }
 
 interface RiskDropdownEntry {
   value: Risk;
+}
+
+interface TypeDropdownEntry {
+  value: AssetType;
 }
 
 @Component({
@@ -38,34 +53,64 @@ export class CreateAssetComponent implements OnInit {
       ]),
       displayName: 'Name',
       errorInfo: 'Please choose name with at least 3 characters',
-      type: INPUT_TYPE.INPUT,
+      element: {
+        type: INPUT_TYPE.INPUT,
+      },
     },
     description: {
       control: new FormControl('', [Validators.required]),
       displayName: 'Description',
       errorInfo: 'Please enter a description',
-      type: INPUT_TYPE.INPUT,
+      element: {
+        type: INPUT_TYPE.INPUT,
+      },
     },
     risk: {
       control: new FormControl('', [Validators.required]),
       displayName: 'Risk',
       errorInfo: 'Please choose a risk level',
-      type: INPUT_TYPE.DROPDOWN,
+      element: {
+        type: INPUT_TYPE.DROPDOWN,
+        entries: [{ value: 'low' }, { value: 'middle' }, { value: 'high' }],
+      },
+    },
+    type: {
+      control: new FormControl('', [Validators.required]),
+      displayName: 'Asset type',
+      errorInfo: 'Please choose an asset type',
+      element: {
+        type: INPUT_TYPE.DROPDOWN,
+        entries: [
+          { value: 'cash' },
+          { value: 'bond' },
+          { value: 'stock' },
+          { value: 'commodity' },
+        ],
+      },
     },
     location: {
       control: new FormControl('', []),
       displayName: 'Location',
-      type: INPUT_TYPE.INPUT,
+      element: {
+        type: INPUT_TYPE.INPUT,
+      },
     },
     isin: {
-      control: new FormControl('', []),
+      control: new FormControl('', [
+        Validators.pattern('([A-Z]{2})((?![A-Z]{10}\\b)[A-Z0-9]{10})'),
+      ]),
       displayName: 'Isin',
-      type: INPUT_TYPE.INPUT,
+      errorInfo: 'Not a valid Isin',
+      element: {
+        type: INPUT_TYPE.INPUT,
+      },
     },
     wkn: {
       control: new FormControl('', []),
       displayName: 'Wkn',
-      type: INPUT_TYPE.INPUT,
+      element: {
+        type: INPUT_TYPE.INPUT,
+      },
     },
   };
 
@@ -74,6 +119,14 @@ export class CreateAssetComponent implements OnInit {
     { value: 'middle' },
     { value: 'high' },
   ];
+
+  readonly typeDropdown: TypeDropdownEntry[] = [
+    { value: 'cash' },
+    { value: 'bond' },
+    { value: 'stock' },
+    { value: 'commodity' },
+  ];
+
   readonly inputType = INPUT_TYPE;
 
   ngOnInit(): void {

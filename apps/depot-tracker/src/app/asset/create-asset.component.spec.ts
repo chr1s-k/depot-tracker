@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateAssetComponent } from './create-asset.component';
-import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AssetModule } from './asset.module';
 
 describe('CreateAssetComponent', () => {
   let component: CreateAssetComponent;
@@ -12,13 +11,8 @@ describe('CreateAssetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MatInputModule,
-        ReactiveFormsModule,
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-      ],
-      declarations: [CreateAssetComponent],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, AssetModule],
+      declarations: [],
     }).compileComponents();
   });
 

@@ -23,7 +23,8 @@ describe('Asset', () => {
       wkn: 'wkn',
       isin: 'isin',
       description: 'description',
-      risk: 'risk',
+      risk: 'low',
+      type: 'bond',
     };
     return request(app.getHttpServer())
       .post('/ckdepot/v1/asset')
@@ -54,12 +55,15 @@ describe('Asset', () => {
       .expect(({ body }) => {
         expect(body).toHaveProperty('message');
         expect(body.message).toBeInstanceOf(Array);
-        expect(body.message.length).toEqual(2);
+        expect(body.message.length).toEqual(3);
         expect(body['message']).toContainEqual(
           'name must be longer than or equal to 3 characters'
         );
         expect(body['message']).toContainEqual(
-          'risk should not be null or undefined'
+          'risk must be one of the following values: low,middle,high'
+        );
+        expect(body['message']).toContainEqual(
+          'type must be one of the following values: bond,cash,commodity,stock'
         );
         id = body.id;
       });
@@ -67,12 +71,13 @@ describe('Asset', () => {
 
   it(`/Post new asset`, () => {
     const createAssetDto: CreateAssetDto = {
+      type: undefined,
       location: 'location',
       wkn: 'wkn',
       isin: 'isin',
       description: 'description',
       name: 'name',
-      risk: 'risk',
+      risk: 'middle',
     };
     return request(app.getHttpServer())
       .post('/ckdepot/v1/asset')

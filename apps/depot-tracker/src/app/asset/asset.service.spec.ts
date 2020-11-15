@@ -30,11 +30,12 @@ describe('AssetService', () => {
 
   it('should execute http post', () => {
     const createAssetDto: CreateAssetDto = {
+      type: undefined,
       description: 'testDescription',
       isin: 'testIsin',
       location: 'testLocation',
       name: 'testName',
-      risk: 'testRisk',
+      risk: 'low',
       wkn: 'testWkn',
     };
     service.create(createAssetDto).subscribe();

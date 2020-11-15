@@ -6,7 +6,13 @@ import {
   AssetId,
   CreateAssetDto,
   Description,
+  Isin,
+  Risk,
   TransactionDto,
+  Location,
+  Name,
+  Wkn,
+  AssetType,
 } from '@chris-k-software/api-interfaces';
 import { URLS } from '@chris-k-software/api-interfaces';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
@@ -70,15 +76,16 @@ export class AssetService {
 }
 
 export class Asset implements AssetDto {
-  description: Description = '';
-  id: AssetId = 0;
-  isin = '';
-  location = '';
-  name = '';
-  risk = '';
-  wkn = '';
-  created = new Date();
-  transactions: TransactionDto[];
+  description: Description = undefined;
+  id: AssetId = undefined;
+  isin: Isin = undefined;
+  location: Location = undefined;
+  name: Name = undefined;
+  risk: Risk = undefined;
+  wkn: Wkn = undefined;
+  type: AssetType = undefined;
+  created: Date = new Date();
+  transactions: TransactionDto[] = [];
 
   fees = 0;
   value = 0;
@@ -92,6 +99,7 @@ export class Asset implements AssetDto {
     this.name = assetDto.name;
     this.risk = assetDto.risk;
     this.wkn = assetDto.wkn;
+    this.type = assetDto.type;
     this.created = assetDto.created;
     this.transactions = assetDto.transactions;
     this.fees = Asset.calcFees(this);

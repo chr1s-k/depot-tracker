@@ -54,30 +54,31 @@ export class OverviewAssetComponent
       visible: false,
       order: 0,
     },
-    isin: { displayName: 'Isin', visible: true, order: 5 },
+    isin: { displayName: 'Isin', visible: true, order: 6 },
     location: { displayName: 'Location', visible: true, order: 3 },
     name: { displayName: 'Name', visible: true, order: 1 },
     risk: { displayName: 'Risk', visible: true, order: 4 },
-    wkn: { displayName: 'Wkn', visible: true, order: 6 },
+    type: { displayName: 'Asset type', visible: true, order: 5 },
+    wkn: { displayName: 'Wkn', visible: true, order: 7 },
     value: {
       displayName: 'Value',
       visible: true,
-      order: 7,
+      order: 8,
     },
     fees: {
       displayName: 'Fee',
       visible: true,
-      order: 8,
+      order: 9,
     },
     unitCount: {
       displayName: 'Unit count',
       visible: true,
-      order: 9,
+      order: 10,
     },
     created: {
       displayName: 'Created',
       visible: false,
-      order: 10,
+      order: 11,
     },
   };
 

@@ -80,9 +80,10 @@ describe('Transaction', () => {
       });
   });
 
+  // TODO decouple test so it is independent of existing asset
   it(`/Post new transaction`, () => {
     const createTransactionDto: CreateTransactionDto = {
-      assetId: 3,
+      assetId: 1,
       fee: 0,
       unitCount: 1,
       unitPrice: 0,

@@ -1,4 +1,4 @@
-import { IsDefined, IsOptional, MinLength } from 'class-validator';
+import { IsIn, IsOptional, IsString, MinLength } from 'class-validator';
 import { TransactionDto } from './api-transaction-interface';
 
 export interface IAsset {
@@ -8,6 +8,7 @@ export interface IAsset {
   location: Location;
   isin: Isin;
   wkn: Wkn;
+  type: AssetType;
 }
 
 export interface AssetDto extends IAsset {
@@ -19,20 +20,25 @@ export interface AssetDto extends IAsset {
 export type AssetId = number;
 export type Name = string;
 export type Description = string;
-export type Risk = 'high' | 'middle' | 'low';
 export type Location = string;
 export type Isin = string;
 export type Wkn = string;
+export type Risk = 'high' | 'middle' | 'low';
+const IsInRisk: Risk[] = ['low', 'middle', 'high'];
+export type AssetType = 'stock' | 'bond' | 'cash' | 'commodity';
+const IsInAssetType: AssetType[] = ['bond', 'cash', 'commodity', 'stock'];
 
 export class CreateAssetDto implements IAsset {
   @MinLength(3)
   name: Name;
   @MinLength(3)
   description: Description;
-  @IsDefined()
+  @IsIn(IsInRisk)
   risk: Risk;
-  @IsDefined()
+  @IsString()
   location: Location;
+  @IsIn(IsInAssetType)
+  type: AssetType;
   @IsOptional()
   isin: Isin;
   @IsOptional()

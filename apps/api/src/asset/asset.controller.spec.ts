@@ -35,11 +35,12 @@ describe('AssetController', () => {
   // This test doesnt make sense, since it checks the mocked return value
   it('should return asset on create', async () => {
     const createAssetDto: CreateAssetDto = {
+      type: undefined,
       description: '',
       isin: '',
       location: '',
       name: '',
-      risk: '',
+      risk: 'low',
       wkn: '',
     };
     const asset = await controller.create(createAssetDto);
