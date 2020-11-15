@@ -16,10 +16,10 @@ import { Subscription } from 'rxjs';
 import { CurrencyPipe } from '@angular/common';
 
 interface OverviewColumn {
-  displayName: string;
-  visible: boolean;
+  header: string;
+  isVisible: boolean;
   order: number;
-  fct?: (asset: Asset) => number;
+  isCurrency?: boolean;
 }
 
 @Component({
@@ -48,46 +48,48 @@ export class OverviewAssetComponent
     OverviewColumn
   > = {
     description: {
-      displayName: 'Description',
-      visible: true,
+      header: 'Description',
+      isVisible: true,
       order: 2,
     },
     id: {
-      displayName: 'Id',
-      visible: false,
+      header: 'Id',
+      isVisible: false,
       order: 0,
     },
-    isin: { displayName: 'Isin', visible: true, order: 6 },
-    location: { displayName: 'Location', visible: true, order: 3 },
-    name: { displayName: 'Name', visible: true, order: 1 },
-    risk: { displayName: 'Risk', visible: true, order: 4 },
-    type: { displayName: 'Asset type', visible: true, order: 5 },
-    wkn: { displayName: 'Wkn', visible: true, order: 7 },
+    isin: { header: 'Isin', isVisible: true, order: 6 },
+    location: { header: 'Location', isVisible: true, order: 3 },
+    name: { header: 'Name', isVisible: true, order: 1 },
+    risk: { header: 'Risk', isVisible: true, order: 4 },
+    type: { header: 'Asset type', isVisible: true, order: 5 },
+    wkn: { header: 'Wkn', isVisible: true, order: 7 },
     value: {
-      displayName: 'Value',
-      visible: true,
+      header: 'Value',
+      isVisible: true,
       order: 8,
+      isCurrency: true,
     },
     fees: {
-      displayName: 'Fee',
-      visible: true,
+      header: 'Fees',
+      isVisible: true,
       order: 9,
+      isCurrency: true,
     },
     unitCount: {
-      displayName: 'Unit count',
-      visible: true,
+      header: 'Unit count',
+      isVisible: true,
       order: 10,
     },
     created: {
-      displayName: 'Created',
-      visible: false,
+      header: 'Created',
+      isVisible: false,
       order: 11,
     },
   };
 
   displayedColumns(): string[] {
     const displayedDataColumns = Object.entries(this.columns)
-      .filter((column) => column[1].visible)
+      .filter((column) => column[1].isVisible)
       .sort((a, b) => a[1].order - b[1].order)
       .map((columnEntry) => columnEntry[0]);
     return displayedDataColumns.concat(['actions']);
@@ -126,6 +128,10 @@ export class OverviewAssetComponent
 
   navigateToAssetCreate() {
     this.router.navigate([ASSET_ROUTE_PATHS.assetCreate]);
+  }
+
+  keepKeyOrder() {
+    return 0;
   }
 
   private sortData(sort: Sort): void {

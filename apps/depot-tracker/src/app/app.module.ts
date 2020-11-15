@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -11,6 +11,11 @@ import { assetRoutes } from './asset/asset.routes';
 import { transactionRoutes } from './transaction/transaction.routes';
 import { TransactionModule } from './transaction/transaction.module';
 
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+
+registerLocaleData(localeDe);
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -20,9 +25,14 @@ import { TransactionModule } from './transaction/transaction.module';
     LayoutModule,
     AssetModule,
     TransactionModule,
-    RouterModule.forRoot([...assetRoutes, ...transactionRoutes], { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot([...assetRoutes, ...transactionRoutes], {
+      relativeLinkResolution: 'corrected',
+    }),
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'de-DE' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
