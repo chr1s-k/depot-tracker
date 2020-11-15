@@ -20,7 +20,7 @@ import { TransactionModule } from './transaction/transaction.module';
     LayoutModule,
     AssetModule,
     TransactionModule,
-    RouterModule.forRoot([...assetRoutes, ...transactionRoutes]),
+    RouterModule.forRoot([...assetRoutes, ...transactionRoutes], { relativeLinkResolution: 'legacy' }),
   ],
   providers: [],
   bootstrap: [AppComponent],
