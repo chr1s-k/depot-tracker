@@ -9,13 +9,14 @@ export class TransactionRepository extends Repository<TransactionEntity> {
     createTransactionDto: CreateTransactionDto,
     assetEntity: AssetEntity
   ) {
-    const { fee, unitCount, unitPrice } = createTransactionDto;
+    const { fee, unitCount, unitPrice, note } = createTransactionDto;
     const transactionEntity = new TransactionEntity();
     transactionEntity.created = new Date();
     transactionEntity.asset = assetEntity;
     transactionEntity.fee = fee;
     transactionEntity.unitCount = unitCount;
     transactionEntity.unitPrice = unitPrice;
+    transactionEntity.note = note;
     await transactionEntity.save();
     return transactionEntity;
   }

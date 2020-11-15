@@ -13,6 +13,7 @@ import { Asset, AssetService } from './asset.service';
 import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
 import { Subscription } from 'rxjs';
+import { CurrencyPipe } from '@angular/common';
 
 interface OverviewColumn {
   displayName: string;
@@ -25,6 +26,7 @@ interface OverviewColumn {
   selector: 'cs-overview-asset',
   templateUrl: './overview-asset.component.html',
   styleUrls: ['./overview-asset.component.scss'],
+  providers: [CurrencyPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewAssetComponent
@@ -32,6 +34,7 @@ export class OverviewAssetComponent
   constructor(
     private assetService: AssetService,
     private router: Router,
+    private currencyPipe: CurrencyPipe,
     private ref: ChangeDetectorRef
   ) {}
 
@@ -91,7 +94,13 @@ export class OverviewAssetComponent
   }
 
   totalValueFor(key: keyof Asset & ('fees' | 'value' | 'unitCount')) {
-    if (key === 'value' || key === 'fees' || key === 'unitCount') {
+    if (key === 'value' || key === 'fees') {
+      const res = this.data
+        .map((asset) => asset[key])
+        .reduce((acc, val) => acc + val, 0)
+        .toString();
+      return this.currencyPipe.transform(res);
+    } else if (key === 'unitCount') {
       return this.data
         .map((asset) => asset[key])
         .reduce((acc, val) => acc + val, 0)

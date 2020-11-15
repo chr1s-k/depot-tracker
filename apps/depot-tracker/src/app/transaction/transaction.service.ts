@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   CreateTransactionDto,
   Fee,
+  Note,
   TransactionDto,
   TransactionId,
   UnitCount,
@@ -41,11 +42,13 @@ export class Transaction implements TransactionDto {
   id: TransactionId;
   unitCount: UnitCount;
   unitPrice: UnitPrice;
+  note: Note;
   constructor(transactionDto: TransactionDto) {
     this.created = transactionDto.created;
     this.fee = transactionDto.fee;
     this.id = transactionDto.id;
     this.unitCount = transactionDto.unitCount;
     this.unitPrice = transactionDto.unitPrice;
+    this.note = transactionDto.note;
   }
 }

@@ -47,6 +47,7 @@ export class OverviewTransactionComponent
     unitCount: { displayName: 'Unit count', visible: true, order: 2 },
     unitPrice: { displayName: 'Unit price', visible: true, order: 3 },
     created: { displayName: 'Created', visible: true, order: 4 },
+    note: { displayName: 'Note', visible: true, order: 5 },
   };
 
   subscriptions: Subscription[] = [];

@@ -8,7 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 interface CsInputDefinition {
   control: FormControl;
   displayName: string;
-  errorInfo: string;
+  type: 'number' | 'text';
+  errorInfo?: string;
 }
 
 @Component({
@@ -25,26 +26,39 @@ export class CreateTransactionComponent implements OnInit {
   ) {}
 
   form: FormGroup;
-  readonly fields: Record<keyof CreateTransactionDto, CsInputDefinition> = {
+  readonly fields: Record<
+    keyof CreateTransactionDto | 'note',
+    CsInputDefinition
+  > = {
     assetId: {
-      control: new FormControl('', [Validators.required]),
+      control: new FormControl({ value: '', disabled: true }, [
+        Validators.required,
+      ]),
       displayName: 'Asset id',
-      errorInfo: 'Please choose something useful',
+      type: 'number',
     },
     fee: {
-      control: new FormControl('', [Validators.required]),
+      control: new FormControl('', [Validators.required, Validators.min(0)]),
       displayName: 'Fee',
-      errorInfo: 'Please choose something useful',
+      errorInfo: 'Must be greater or equal than 0',
+      type: 'number',
     },
     unitPrice: {
-      control: new FormControl('', [Validators.required]),
+      control: new FormControl('', [Validators.required, Validators.min(0)]),
       displayName: 'Unit price',
-      errorInfo: 'Please choose something useful',
+      errorInfo: 'Must be greater or equal than 0',
+      type: 'number',
     },
     unitCount: {
       control: new FormControl('', [Validators.required]),
-      displayName: 'unit count',
-      errorInfo: 'Please choose something useful',
+      displayName: 'Unit count',
+      errorInfo: 'Must be a number',
+      type: 'number',
+    },
+    note: {
+      control: new FormControl('', []),
+      displayName: 'Note',
+      type: 'text',
     },
   };
 
@@ -75,6 +89,7 @@ export class CreateTransactionComponent implements OnInit {
       fee: +this.fields.fee.control.value,
       unitCount: +this.fields.unitCount.control.value,
       unitPrice: +this.fields.unitPrice.control.value,
+      note: this.fields.note.control.value,
     };
     this.transactionService.create(newTransactionDto).subscribe(
       () => {
