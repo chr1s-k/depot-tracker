@@ -19,7 +19,7 @@ export interface AssetDto extends IAsset {
 export type AssetId = number;
 export type Name = string;
 export type Description = string;
-export type Risk = 'high' | 'low' | string;
+export type Risk = 'high' | 'middle' | 'low';
 export type Location = string;
 export type Isin = string;
 export type Wkn = string;

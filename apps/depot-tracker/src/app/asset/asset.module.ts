@@ -9,6 +9,7 @@ import { OverviewAssetComponent } from './overview-asset.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [CreateAssetComponent, OverviewAssetComponent],
@@ -22,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     MatSortModule,
     MatIconModule,
+    MatSelectModule,
   ],
 })
 export class AssetModule {}

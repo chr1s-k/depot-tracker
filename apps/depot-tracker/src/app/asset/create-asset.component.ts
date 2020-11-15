@@ -1,13 +1,23 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { CreateAssetDto } from '@chris-k-software/api-interfaces';
+import { CreateAssetDto, Risk } from '@chris-k-software/api-interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AssetService } from './asset.service';
 import { Location } from '@angular/common';
 
+enum INPUT_TYPE {
+  INPUT = 'input',
+  DROPDOWN = 'dropdown',
+}
+
 interface CsInputDefinition {
   control: FormControl;
   displayName: string;
-  errorInfo: string;
+  errorInfo?: string;
+  type: INPUT_TYPE;
+}
+
+interface RiskDropdownEntry {
+  value: Risk;
 }
 
 @Component({
@@ -22,36 +32,49 @@ export class CreateAssetComponent implements OnInit {
   form: FormGroup;
   readonly fields: Record<keyof CreateAssetDto, CsInputDefinition> = {
     name: {
-      control: new FormControl('', [Validators.required]),
+      control: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
       displayName: 'Name',
-      errorInfo: 'Please choose something useful',
+      errorInfo: 'Please choose name with at least 3 characters',
+      type: INPUT_TYPE.INPUT,
     },
     description: {
       control: new FormControl('', [Validators.required]),
       displayName: 'Description',
-      errorInfo: 'Please choose something useful',
-    },
-    location: {
-      control: new FormControl('', [Validators.required]),
-      displayName: 'Location',
-      errorInfo: 'Please choose something useful',
+      errorInfo: 'Please enter a description',
+      type: INPUT_TYPE.INPUT,
     },
     risk: {
       control: new FormControl('', [Validators.required]),
       displayName: 'Risk',
-      errorInfo: 'Please choose something useful',
+      errorInfo: 'Please choose a risk level',
+      type: INPUT_TYPE.DROPDOWN,
+    },
+    location: {
+      control: new FormControl('', []),
+      displayName: 'Location',
+      type: INPUT_TYPE.INPUT,
     },
     isin: {
-      control: new FormControl('', [Validators.required]),
+      control: new FormControl('', []),
       displayName: 'Isin',
-      errorInfo: 'Please choose something useful',
+      type: INPUT_TYPE.INPUT,
     },
     wkn: {
-      control: new FormControl('', [Validators.required]),
+      control: new FormControl('', []),
       displayName: 'Wkn',
-      errorInfo: 'Please choose something useful',
+      type: INPUT_TYPE.INPUT,
     },
   };
+
+  readonly riskDropdown: RiskDropdownEntry[] = [
+    { value: 'low' },
+    { value: 'middle' },
+    { value: 'high' },
+  ];
+  readonly inputType = INPUT_TYPE;
 
   ngOnInit(): void {
     this.form = new FormGroup(this.mapFieldsToControls());
