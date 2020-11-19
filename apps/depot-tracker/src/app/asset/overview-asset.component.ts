@@ -180,4 +180,154 @@ export class OverviewAssetComponent
         TRANSACTION_ROUTE_PATHS.transactionCreate
     );
   }
+
+  diagramOptionsTypes(): unknown {
+    const legendData = this.data.map((asset) => asset.type);
+    let data = this.data.reduce((acc, val) => {
+      acc[val.type] = (acc[val.type] || 0) + val.value;
+      return acc;
+    }, {});
+
+    data = Object.entries(data).map((entry) => ({
+      name: entry[0],
+      value: entry[1],
+    }));
+
+    const options = {
+      title: {
+        text: 'Type allocation',
+        x: 'center',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)',
+      },
+      legend: {
+        x: 'center',
+        y: 'bottom',
+        data: legendData,
+      },
+      calculable: true,
+      series: [
+        {
+          name: 'area',
+          type: 'pie',
+          radius: [30, 110],
+          // roseType: 'area',
+          data: data,
+        },
+      ],
+    };
+    return options;
+  }
+
+  diagramOptions(): unknown {
+    const legendData = this.data.map((asset) => asset.name);
+    const data = this.data.map((asset) => ({
+      value: asset.value,
+      name: asset.name,
+    }));
+    const options = {
+      title: {
+        text: 'Asset allocation',
+        x: 'center',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)',
+      },
+      legend: {
+        x: 'center',
+        y: 'bottom',
+        data: legendData,
+      },
+      calculable: true,
+      series: [
+        {
+          name: 'area',
+          type: 'pie',
+          radius: [30, 110],
+          // roseType: 'area',
+          data: data,
+        },
+      ],
+    };
+    return options;
+  }
+
+  options = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'cross',
+        label: {
+          backgroundColor: '#6a7985',
+        },
+      },
+    },
+    legend: {
+      data: ['X-1', 'X-2', 'X-3', 'X-4', 'X-5'],
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true,
+    },
+    xAxis: [
+      {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      },
+    ],
+    yAxis: [
+      {
+        type: 'value',
+      },
+    ],
+    series: [
+      {
+        name: 'X-1',
+        type: 'line',
+        stack: 'counts',
+        areaStyle: { normal: {} },
+        data: [120, 132, 101, 134, 90, 230, 210],
+      },
+      {
+        name: 'X-2',
+        type: 'line',
+        stack: 'counts',
+        areaStyle: { normal: {} },
+        data: [220, 182, 191, 234, 290, 330, 310],
+      },
+      {
+        name: 'X-3',
+        type: 'line',
+        stack: 'counts',
+        areaStyle: { normal: {} },
+        data: [150, 232, 201, 154, 190, 330, 410],
+      },
+      {
+        name: 'X-4',
+        type: 'line',
+        stack: 'counts',
+        areaStyle: { normal: {} },
+        data: [320, 332, 301, 334, 390, 330, 320],
+      },
+      {
+        name: 'X-5',
+        type: 'line',
+        stack: 'counts',
+        label: {
+          normal: {
+            show: true,
+            position: 'top',
+          },
+        },
+        areaStyle: { normal: {} },
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+      },
+    ],
+  };
 }

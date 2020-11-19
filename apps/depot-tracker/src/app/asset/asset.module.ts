@@ -10,6 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [CreateAssetComponent, OverviewAssetComponent],
@@ -24,6 +25,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatSortModule,
     MatIconModule,
     MatSelectModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
   ],
 })
 export class AssetModule {}
