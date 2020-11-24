@@ -26,10 +26,7 @@ export class CreateTransactionComponent implements OnInit {
   ) {}
 
   form: FormGroup;
-  readonly fields: Record<
-    keyof CreateTransactionDto | 'note',
-    CsInputDefinition
-  > = {
+  readonly fields: Record<keyof CreateTransactionDto, CsInputDefinition> = {
     assetId: {
       control: new FormControl({ value: '', disabled: true }, [
         Validators.required,
@@ -64,9 +61,6 @@ export class CreateTransactionComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup(this.mapFieldsToControls());
-    this.form.valueChanges.subscribe((value: CreateTransactionDto) => {
-      console.log(value);
-    });
     this.fields.assetId.control.setValue(
       this.route.snapshot.paramMap.get('id')
     );
@@ -97,5 +91,9 @@ export class CreateTransactionComponent implements OnInit {
       },
       (e) => console.error(e)
     );
+  }
+
+  onCancel() {
+    this.location.back();
   }
 }
