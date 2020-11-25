@@ -23,6 +23,7 @@ describe('Transaction', () => {
       fee: 0,
       unitCount: 1,
       unitPrice: 0,
+      note: '',
     };
     return request(app.getHttpServer())
       .post('/ckdepot/v1/transaction')
@@ -44,6 +45,7 @@ describe('Transaction', () => {
       assetId: 1,
       unitCount: 1,
       unitPrice: 0,
+      note: '',
     };
     return request(app.getHttpServer())
       .post('/ckdepot/v1/transaction')
@@ -64,6 +66,7 @@ describe('Transaction', () => {
       unitCount: 1,
       unitPrice: 0,
       fee: 0,
+      note: '',
     };
     return request(app.getHttpServer())
       .post('/ckdepot/v1/transaction')
@@ -83,6 +86,7 @@ describe('Transaction', () => {
   // TODO decouple test so it is independent of existing asset
   it(`/Post new transaction`, () => {
     const createTransactionDto: CreateTransactionDto = {
+      note: '',
       assetId: 1,
       fee: 0,
       unitCount: 1,
