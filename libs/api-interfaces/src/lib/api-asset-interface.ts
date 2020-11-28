@@ -8,6 +8,7 @@ export interface IAsset {
   location: Location;
   isin: Isin;
   wkn: Wkn;
+  tickerSymbol: TickerSymbol;
   type: AssetType;
 }
 
@@ -23,6 +24,7 @@ export type Description = string;
 export type Location = string;
 export type Isin = string;
 export type Wkn = string;
+export type TickerSymbol = string;
 export type Risk = 'high' | 'middle' | 'low';
 const IsInRisk: Risk[] = ['low', 'middle', 'high'];
 export type AssetType = 'stock' | 'bond' | 'cash' | 'commodity';
@@ -43,6 +45,8 @@ export class CreateAssetDto implements IAsset {
   isin: Isin;
   @IsOptional()
   wkn: Wkn;
+  @IsOptional()
+  tickerSymbol: Wkn;
 }
 
 export interface AssetQuery extends Partial<IAsset> {}

@@ -13,6 +13,7 @@ export class AssetRepository extends Repository<AssetEntity> {
       location,
       risk,
       type,
+      tickerSymbol,
     } = createAssetDto;
     const assetEntity = new AssetEntity();
     assetEntity.created = new Date();
@@ -22,6 +23,7 @@ export class AssetRepository extends Repository<AssetEntity> {
     assetEntity.isin = isin;
     assetEntity.wkn = wkn;
     assetEntity.type = type;
+    assetEntity.tickerSymbol = tickerSymbol;
     assetEntity.location = location;
     assetEntity.transactions = [];
     await assetEntity.save();

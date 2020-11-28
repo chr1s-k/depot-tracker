@@ -97,16 +97,22 @@ export class OverviewAssetComponent
       order: 7,
       type: this.columnTypes.text,
     },
+    tickerSymbol: {
+      header: 'Ticker',
+      isVisible: true,
+      order: 8,
+      type: this.columnTypes.text,
+    },
     value: {
       header: 'Value',
       isVisible: true,
-      order: 8,
+      order: 9,
       type: this.columnTypes.currency,
     },
     fees: {
       header: 'Fees',
       isVisible: true,
-      order: 9,
+      order: 11,
       type: this.columnTypes.currency,
     },
     unitCount: {
@@ -118,7 +124,7 @@ export class OverviewAssetComponent
     created: {
       header: 'Created',
       isVisible: false,
-      order: 11,
+      order: 12,
       type: this.columnTypes.date,
     },
   };

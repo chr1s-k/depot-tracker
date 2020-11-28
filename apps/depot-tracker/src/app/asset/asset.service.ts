@@ -13,6 +13,7 @@ import {
   Name,
   Wkn,
   AssetType,
+  TickerSymbol,
 } from '@chris-k-software/api-interfaces';
 import { URLS } from '@chris-k-software/api-interfaces';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
@@ -84,6 +85,7 @@ export class Asset implements AssetDto {
   risk: Risk = undefined;
   wkn: Wkn = undefined;
   type: AssetType = undefined;
+  tickerSymbol: TickerSymbol = undefined;
   created: Date = new Date();
   transactions: TransactionDto[] = [];
 
@@ -102,6 +104,8 @@ export class Asset implements AssetDto {
     this.type = assetDto.type;
     this.created = assetDto.created;
     this.transactions = assetDto.transactions;
+    this.tickerSymbol = assetDto.tickerSymbol;
+
     this.fees = Asset.calcFees(this);
     this.value = Asset.calcValue(this);
     this.unitCount = Asset.calcUnitCount(this);

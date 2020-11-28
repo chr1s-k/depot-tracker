@@ -42,6 +42,9 @@ export class AssetEntity extends BaseEntity
   wkn: string;
 
   @Column()
+  tickerSymbol: string;
+
+  @Column()
   type: string;
 
   @OneToMany(

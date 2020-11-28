@@ -100,6 +100,13 @@ export class CreateAssetComponent implements OnInit {
         type: INPUT_TYPE.INPUT,
       },
     },
+    tickerSymbol: {
+      control: new FormControl('', []),
+      displayName: 'Symbol',
+      element: {
+        type: INPUT_TYPE.INPUT,
+      },
+    },
   };
 
   readonly inputType = INPUT_TYPE;
