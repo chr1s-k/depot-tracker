@@ -12,9 +12,36 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header i18n>
       {{ column.value.displayName }}
     </th>
-    <td mat-cell *matCellDef="let element">{{ element[column.key] }}</td>
+
+    <ng-container *ngIf="column.value.type === columnTypes.text">
+      <td mat-cell *matCellDef="let element">{{ element[column.key] }}</td>
+    </ng-container>
+    <ng-container *ngIf="column.value.type === columnTypes.currency">
+      <td mat-cell *matCellDef="let element">
+        {{ element[column.key] | currency }}
+      </td>
+    </ng-container>
+    <ng-container *ngIf="column.value.type === columnTypes.date">
+      <td mat-cell *matCellDef="let element">
+        {{ element[column.key] | date: 'medium' }}
+      </td>
+    </ng-container>
+
+    <td mat-footer-cell *matFooterCellDef>
+      <strong>{{ totalValueFor(column.key) }}</strong>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+  <tr mat-footer-row *matFooterRowDef="displayedColumns(); sticky: true"></tr>
 </table>
+<button
+  style="margin: 12px; float: right;"
+  mat-flat-button
+  color="secondary"
+  i18n
+  (click)="onCancel()"
+>
+  Cancel
+</button>

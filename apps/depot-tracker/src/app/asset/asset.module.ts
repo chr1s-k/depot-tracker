@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { CreateAssetComponent } from './create-asset.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -29,5 +29,6 @@ import { NgxEchartsModule } from 'ngx-echarts';
       echarts: () => import('echarts'),
     }),
   ],
+  providers: [DatePipe, CurrencyPipe],
 })
 export class AssetModule {}

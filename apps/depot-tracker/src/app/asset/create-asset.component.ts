@@ -1,9 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {
-  AssetType,
-  CreateAssetDto,
-  Risk,
-} from '@chris-k-software/api-interfaces';
+import { CreateAssetDto } from '@chris-k-software/api-interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AssetService } from './asset.service';
 import { Location } from '@angular/common';
@@ -25,14 +21,6 @@ interface CsInputDefinition {
     | {
         type: INPUT_TYPE.INPUT;
       };
-}
-
-interface RiskDropdownEntry {
-  value: Risk;
-}
-
-interface TypeDropdownEntry {
-  value: AssetType;
 }
 
 @Component({
@@ -114,19 +102,6 @@ export class CreateAssetComponent implements OnInit {
     },
   };
 
-  readonly riskDropdown: RiskDropdownEntry[] = [
-    { value: 'low' },
-    { value: 'middle' },
-    { value: 'high' },
-  ];
-
-  readonly typeDropdown: TypeDropdownEntry[] = [
-    { value: 'cash' },
-    { value: 'bond' },
-    { value: 'stock' },
-    { value: 'commodity' },
-  ];
-
   readonly inputType = INPUT_TYPE;
 
   ngOnInit(): void {
@@ -152,5 +127,9 @@ export class CreateAssetComponent implements OnInit {
       () => this.location.back(),
       (e) => console.error(e)
     );
+  }
+
+  onCancel() {
+    this.location.back();
   }
 }

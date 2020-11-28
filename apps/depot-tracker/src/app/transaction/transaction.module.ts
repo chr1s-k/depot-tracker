@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { CreateTransactionComponent } from './create-transaction.component';
 import { OverviewTransactionComponent } from './overview-transaction.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -21,5 +21,6 @@ import { MatSortModule } from '@angular/material/sort';
     MatSortModule,
   ],
   declarations: [CreateTransactionComponent, OverviewTransactionComponent],
+  providers: [CurrencyPipe],
 })
 export class TransactionModule {}

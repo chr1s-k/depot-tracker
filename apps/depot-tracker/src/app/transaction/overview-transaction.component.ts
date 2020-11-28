@@ -1,53 +1,84 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ITransaction } from '@chris-k-software/api-interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort, Sort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
-import { AssetService } from '../asset/asset.service';
+import { Asset, AssetService } from '../asset/asset.service';
 import { Transaction } from './transaction.service';
+import { CurrencyPipe, Location } from '@angular/common';
+import { ColumnTypes } from '../shared/column-types';
 
 interface OverviewTransactionColumn {
   displayName: string;
-  visible: boolean;
+  isVisible: boolean;
   order: number;
+  type: ColumnTypes;
 }
 
 @Component({
   selector: 'cs-overview-transaction',
   templateUrl: './overview-transaction.component.html',
   styleUrls: ['./overview-transaction.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewTransactionComponent
   implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private assetService: AssetService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private currencyPipe: CurrencyPipe,
+    private location: Location
   ) {}
 
   @ViewChild(MatSort) sort: MatSort;
-  data: Transaction[];
+  data: Transaction[] = [];
 
-  readonly columns: Record<
-    keyof ITransaction | 'id' | 'created',
-    OverviewTransactionColumn
-  > = {
+  readonly columnTypes = ColumnTypes;
+
+  readonly columns: Record<keyof Transaction, OverviewTransactionColumn> = {
     id: {
       displayName: 'Id',
-      visible: true,
+      isVisible: true,
       order: 0,
+      type: this.columnTypes.text,
     },
-    fee: { displayName: 'Fee', visible: true, order: 1 },
-    unitCount: { displayName: 'Unit count', visible: true, order: 2 },
-    unitPrice: { displayName: 'Unit price', visible: true, order: 3 },
-    created: { displayName: 'Created', visible: true, order: 4 },
-    note: { displayName: 'Note', visible: true, order: 5 },
+    fee: {
+      displayName: 'Fee',
+      isVisible: true,
+      order: 1,
+      type: this.columnTypes.currency,
+    },
+    unitCount: {
+      displayName: 'Unit count',
+      isVisible: true,
+      order: 2,
+      type: this.columnTypes.text,
+    },
+    unitPrice: {
+      displayName: 'Unit price',
+      isVisible: true,
+      order: 3,
+      type: this.columnTypes.currency,
+    },
+    created: {
+      displayName: 'Created',
+      isVisible: true,
+      order: 4,
+      type: this.columnTypes.date,
+    },
+    note: {
+      displayName: 'Note',
+      isVisible: true,
+      order: 5,
+      type: this.columnTypes.text,
+    },
   };
 
   subscriptions: Subscription[] = [];
@@ -56,18 +87,42 @@ export class OverviewTransactionComponent
     this.subscriptions.push(
       this.assetService.assets$.subscribe((assets) => {
         const assetId = +this.route.snapshot.paramMap.get('id');
-        this.data = assets.filter(
-          (asset) => asset.id === assetId
-        )[0].transactions;
+        this.data = this.extractTableData(assets, assetId);
       })
     );
+    this.assetService.getAll().subscribe();
+  }
+
+  private extractTableData(assets: Asset[], assetId: number) {
+    if (assets.length === 0) {
+      return [];
+    } else {
+      return assets.filter((asset) => asset.id === assetId)[0].transactions;
+    }
   }
 
   displayedColumns(): string[] {
     return Object.entries(this.columns)
-      .filter((column) => column[1].visible)
+      .filter((column) => column[1].isVisible)
       .sort((a, b) => a[1].order - b[1].order)
       .map((columnEntry) => columnEntry[0]);
+  }
+
+  totalValueFor(key: keyof Transaction & ('fee' | 'unitPrice' | 'unitCount')) {
+    if (key === 'fee' || key === 'unitPrice') {
+      const res = this.data
+        .map((asset) => asset[key])
+        .reduce((acc, val) => acc + val, 0)
+        .toString();
+      return this.currencyPipe.transform(res);
+    } else if (key === 'unitCount') {
+      return this.data
+        .map((asset) => asset[key])
+        .reduce((acc, val) => acc + val, 0)
+        .toString();
+    } else {
+      return '';
+    }
   }
 
   private sortData(sort: Sort): void {
@@ -95,5 +150,9 @@ export class OverviewTransactionComponent
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  onCancel() {
+    this.location.back();
   }
 }

@@ -14,19 +14,19 @@ import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
 import { Subscription } from 'rxjs';
 import { CurrencyPipe } from '@angular/common';
+import { ColumnTypes } from '../shared/column-types';
 
 interface OverviewColumn {
   header: string;
   isVisible: boolean;
   order: number;
-  isCurrency?: boolean;
+  type: ColumnTypes;
 }
 
 @Component({
   selector: 'cs-overview-asset',
   templateUrl: './overview-asset.component.html',
   styleUrls: ['./overview-asset.component.scss'],
-  providers: [CurrencyPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewAssetComponent
@@ -43,6 +43,8 @@ export class OverviewAssetComponent
 
   subscriptions: Subscription[] = [];
 
+  readonly columnTypes = ColumnTypes;
+
   readonly columns: Record<
     Exclude<keyof Asset, 'transactions'>,
     OverviewColumn
@@ -51,39 +53,73 @@ export class OverviewAssetComponent
       header: 'Description',
       isVisible: true,
       order: 2,
+      type: this.columnTypes.text,
     },
     id: {
       header: 'Id',
       isVisible: false,
       order: 0,
+      type: this.columnTypes.text,
     },
-    isin: { header: 'Isin', isVisible: true, order: 6 },
-    location: { header: 'Location', isVisible: true, order: 3 },
-    name: { header: 'Name', isVisible: true, order: 1 },
-    risk: { header: 'Risk', isVisible: true, order: 4 },
-    type: { header: 'Asset type', isVisible: true, order: 5 },
-    wkn: { header: 'Wkn', isVisible: true, order: 7 },
+    isin: {
+      header: 'Isin',
+      isVisible: false,
+      order: 6,
+      type: this.columnTypes.text,
+    },
+    location: {
+      header: 'Location',
+      isVisible: false,
+      order: 3,
+      type: this.columnTypes.text,
+    },
+    name: {
+      header: 'Name',
+      isVisible: true,
+      order: 1,
+      type: this.columnTypes.text,
+    },
+    risk: {
+      header: 'Risk',
+      isVisible: true,
+      order: 4,
+      type: this.columnTypes.text,
+    },
+    type: {
+      header: 'Asset type',
+      isVisible: true,
+      order: 5,
+      type: this.columnTypes.text,
+    },
+    wkn: {
+      header: 'Wkn',
+      isVisible: false,
+      order: 7,
+      type: this.columnTypes.text,
+    },
     value: {
       header: 'Value',
       isVisible: true,
       order: 8,
-      isCurrency: true,
+      type: this.columnTypes.currency,
     },
     fees: {
       header: 'Fees',
       isVisible: true,
       order: 9,
-      isCurrency: true,
+      type: this.columnTypes.currency,
     },
     unitCount: {
       header: 'Unit count',
-      isVisible: true,
+      isVisible: false,
       order: 10,
+      type: this.columnTypes.text,
     },
     created: {
       header: 'Created',
       isVisible: false,
       order: 11,
+      type: this.columnTypes.date,
     },
   };
 
@@ -193,7 +229,7 @@ export class OverviewAssetComponent
       value: entry[1],
     }));
 
-    const options = {
+    return {
       title: {
         text: 'Type allocation',
         x: 'center',
@@ -218,7 +254,6 @@ export class OverviewAssetComponent
         },
       ],
     };
-    return options;
   }
 
   diagramOptions(): unknown {
@@ -227,7 +262,7 @@ export class OverviewAssetComponent
       value: asset.value,
       name: asset.name,
     }));
-    const options = {
+    return {
       title: {
         text: 'Asset allocation',
         x: 'center',
@@ -252,82 +287,5 @@ export class OverviewAssetComponent
         },
       ],
     };
-    return options;
   }
-
-  options = {
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
-        },
-      },
-    },
-    legend: {
-      data: ['X-1', 'X-2', 'X-3', 'X-4', 'X-5'],
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true,
-    },
-    xAxis: [
-      {
-        type: 'category',
-        boundaryGap: false,
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-      },
-    ],
-    series: [
-      {
-        name: 'X-1',
-        type: 'line',
-        stack: 'counts',
-        areaStyle: { normal: {} },
-        data: [120, 132, 101, 134, 90, 230, 210],
-      },
-      {
-        name: 'X-2',
-        type: 'line',
-        stack: 'counts',
-        areaStyle: { normal: {} },
-        data: [220, 182, 191, 234, 290, 330, 310],
-      },
-      {
-        name: 'X-3',
-        type: 'line',
-        stack: 'counts',
-        areaStyle: { normal: {} },
-        data: [150, 232, 201, 154, 190, 330, 410],
-      },
-      {
-        name: 'X-4',
-        type: 'line',
-        stack: 'counts',
-        areaStyle: { normal: {} },
-        data: [320, 332, 301, 334, 390, 330, 320],
-      },
-      {
-        name: 'X-5',
-        type: 'line',
-        stack: 'counts',
-        label: {
-          normal: {
-            show: true,
-            position: 'top',
-          },
-        },
-        areaStyle: { normal: {} },
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
-      },
-    ],
-  };
 }
