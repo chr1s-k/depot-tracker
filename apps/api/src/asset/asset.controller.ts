@@ -29,16 +29,26 @@ export class AssetController {
   }
 
   @Delete(URLS.assetDeleteV1)
-  @UsePipes(ValidationPipe)
   delete(@Query('id', ParseIntPipe) id: AssetId): Promise<DeleteResult> {
     this.log.verbose(`Deleting asset with id ${id}`);
     return this.assetService.delete(id);
   }
 
   @Get(URLS.assetGetAllV1)
-  @UsePipes(ValidationPipe)
   getAll(): Promise<AssetEntity[]> {
     this.log.verbose(`Getting all assets.`);
     return this.assetService.getAll();
+  }
+
+  @Get(URLS.assetDetailsV1)
+  details(@Query('symbol') symbol: string): Promise<unknown> {
+    this.log.verbose(`Getting details for asset with symbol ${symbol}.`);
+    return this.assetService.assetDetails(symbol);
+  }
+
+  @Get(URLS.assetSymbolTypeahedV1)
+  typeahead(@Query('q') q: string): Promise<unknown> {
+    this.log.verbose(`Getting typeahead for ${q}.`);
+    return this.assetService.symbolTypeahead(q);
   }
 }
