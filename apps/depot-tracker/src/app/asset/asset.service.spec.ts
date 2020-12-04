@@ -37,6 +37,7 @@ describe('AssetService', () => {
       name: 'testName',
       risk: 'low',
       wkn: 'testWkn',
+      tickerSymbol: '',
     };
     service.create(createAssetDto).subscribe();
     const reqs = httpTestingController.match((req) =>

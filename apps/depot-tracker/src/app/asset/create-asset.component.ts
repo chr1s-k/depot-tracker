@@ -1,26 +1,34 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { CreateAssetDto } from '@chris-k-software/api-interfaces';
+import { CreateAssetDto, Quote } from '@chris-k-software/api-interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AssetService } from './asset.service';
 import { Location } from '@angular/common';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime, filter, mergeMap } from 'rxjs/operators';
 
 enum INPUT_TYPE {
   INPUT = 'input',
   DROPDOWN = 'dropdown',
+  AUTOCOMPLETE = 'autocomplete',
 }
 
 interface CsInputDefinition {
   control: FormControl;
   displayName: string;
   errorInfo?: string;
-  element:
-    | {
-        type: INPUT_TYPE.DROPDOWN;
-        entries: { value: string }[];
-      }
-    | {
-        type: INPUT_TYPE.INPUT;
-      };
+  element: AutocompleteElement | DropdownElement | InputElement;
+}
+
+interface AutocompleteElement {
+  type: INPUT_TYPE.AUTOCOMPLETE;
+  filteredList$: Observable<unknown>;
+}
+interface DropdownElement {
+  type: INPUT_TYPE.DROPDOWN;
+  entries: { value: string }[];
+}
+interface InputElement {
+  type: INPUT_TYPE.INPUT;
 }
 
 @Component({
@@ -42,7 +50,8 @@ export class CreateAssetComponent implements OnInit {
       displayName: 'Name',
       errorInfo: 'Please choose name with at least 3 characters',
       element: {
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.AUTOCOMPLETE,
+        filteredList$: new BehaviorSubject([]),
       },
     },
     description: {
@@ -104,7 +113,8 @@ export class CreateAssetComponent implements OnInit {
       control: new FormControl('', []),
       displayName: 'Symbol',
       element: {
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.AUTOCOMPLETE,
+        filteredList$: new BehaviorSubject([]),
       },
     },
   };
@@ -113,9 +123,17 @@ export class CreateAssetComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup(this.mapFieldsToControls());
-    this.form.valueChanges.subscribe((value: CreateAssetDto) => {
-      console.log(value);
-    });
+    this.setupTypeahead();
+  }
+
+  private setupTypeahead() {
+    if ('filteredList$' in this.fields.name.element) {
+      this.fields.name.element.filteredList$ = this.fields.name.control.valueChanges.pipe(
+        debounceTime(300),
+        filter((val: string) => val.length > 0),
+        mergeMap((v) => this.assetService.symbolTypeahead(v))
+      );
+    }
   }
 
   keepKeyOrder() {
@@ -138,5 +156,12 @@ export class CreateAssetComponent implements OnInit {
 
   onCancel() {
     this.location.back();
+  }
+
+  onSelectName(option: Quote) {
+    this.fields.tickerSymbol.control.setValue(option.symbol);
+    this.fields.description.control.setValue(
+      `${option.exchange} ${option.quoteType} ${option.symbol}`
+    );
   }
 }

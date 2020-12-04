@@ -4,7 +4,7 @@ import { CreateAssetDto } from '@chris-k-software/api-interfaces';
 
 @EntityRepository(AssetEntity)
 export class AssetRepository extends Repository<AssetEntity> {
-  async createAsset(createAssetDto: CreateAssetDto) {
+  async createAsset(createAssetDto: CreateAssetDto): Promise<AssetEntity> {
     const {
       name,
       description,

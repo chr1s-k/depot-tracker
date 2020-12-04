@@ -50,3 +50,15 @@ export class CreateAssetDto implements IAsset {
 }
 
 export interface AssetQuery extends Partial<IAsset> {}
+
+export interface Quote {
+  exchange: string;
+  shortname: string;
+  quoteType: string;
+  symbol: string;
+  index: string;
+  score: number;
+  typeDisp: string;
+  longname: string;
+  isYahooFinance: boolean;
+}

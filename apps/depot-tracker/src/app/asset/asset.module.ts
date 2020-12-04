@@ -11,6 +11,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AssetService } from './asset.service';
 
 @NgModule({
   declarations: [CreateAssetComponent, OverviewAssetComponent],
@@ -28,7 +30,8 @@ import { NgxEchartsModule } from 'ngx-echarts';
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
+    MatAutocompleteModule,
   ],
-  providers: [DatePipe, CurrencyPipe],
+  providers: [DatePipe, CurrencyPipe, AssetService],
 })
 export class AssetModule {}

@@ -42,6 +42,7 @@ describe('AssetController', () => {
       name: '',
       risk: 'low',
       wkn: '',
+      tickerSymbol: '',
     };
     const asset = await controller.create(createAssetDto);
     expect(asset).toBeInstanceOf(AssetEntity);

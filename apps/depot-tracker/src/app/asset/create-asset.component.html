@@ -32,6 +32,32 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field
+      *ngIf="
+        entry.value.element.type === inputType.AUTOCOMPLETE &&
+        entry.value as field
+      "
+      appearance="legacy"
+      style="padding: 12px;"
+    >
+      <input
+        type="text"
+        [placeholder]="field.displayName"
+        matInput
+        [formControl]="field.control"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option
+          (onSelectionChange)="onSelectName(option)"
+          *ngFor="let option of field.element.filteredList$ | async"
+          [value]="option.shortname"
+        >
+          <small>{{ option.shortname }}</small>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
   </ng-container>
 
   <button

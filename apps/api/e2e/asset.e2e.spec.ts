@@ -71,13 +71,14 @@ describe('Asset', () => {
 
   it(`/Post new asset`, () => {
     const createAssetDto: CreateAssetDto = {
-      type: undefined,
+      type: 'cash',
       location: 'location',
       wkn: 'wkn',
       isin: 'isin',
       description: 'description',
       name: 'name',
       risk: 'middle',
+      tickerSymbol: '',
     };
     return request(app.getHttpServer())
       .post('/ckdepot/v1/asset')

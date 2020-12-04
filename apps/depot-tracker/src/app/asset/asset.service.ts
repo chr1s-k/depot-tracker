@@ -20,6 +20,7 @@ import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
 import { map } from 'rxjs/operators';
 import clone from 'ramda/src/clone';
 import { isUndefined } from 'util';
+import { Quote } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -73,6 +74,12 @@ export class AssetService {
         return clone(this.assets);
       })
     );
+  }
+
+  symbolTypeahead(q: string): Observable<Quote[]> {
+    const url = this.prefix + URLS.assetSymbolTypeahedV1;
+    const params = new HttpParams().set('q', q);
+    return this.http.get<Quote[]>(url, { params });
   }
 }
 

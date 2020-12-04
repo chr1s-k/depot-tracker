@@ -3,7 +3,11 @@ import { AssetEntity } from './asset.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AssetRepository } from './asset.repository';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
-import { CreateAssetDto, AssetId } from '@chris-k-software/api-interfaces';
+import {
+  AssetId,
+  CreateAssetDto,
+  Quote,
+} from '@chris-k-software/api-interfaces';
 import { map, pluck } from 'rxjs/operators';
 
 @Injectable()
@@ -15,8 +19,7 @@ export class AssetService {
   ) {}
 
   getAll(): Promise<AssetEntity[]> {
-    const assets = this.assetRepository.find({ relations: ['transactions'] });
-    return assets;
+    return this.assetRepository.find({ relations: ['transactions'] });
   }
 
   create(createAssetDto: CreateAssetDto): Promise<AssetEntity> {
@@ -24,11 +27,11 @@ export class AssetService {
   }
 
   async delete(id: AssetId): Promise<DeleteResult> {
-    const deletedAsset = await this.assetRepository.delete(id);
-    if (deletedAsset.affected === 0) {
+    const deleteResult = await this.assetRepository.delete(id);
+    if (deleteResult.affected === 0) {
       throw new NotFoundException(`Asset with id ${id} not deleted.`);
     }
-    return deletedAsset;
+    return deleteResult;
   }
 
   assetDetails(symbol: string): Promise<unknown> {
@@ -53,25 +56,13 @@ export class AssetService {
     };
     return this.http
       .get<unknown>(url, { headers })
-      .pipe(pluck('data'), pluck<unknown, Quote[]>('quotes'))
+      .pipe(pluck<unknown, Quote[]>('data', 'quotes'))
       .toPromise();
   }
 
   private latestPrice(data: HistoricalDataDto) {
     return data.prices[0];
   }
-}
-
-interface Quote {
-  exchange: string;
-  shortname: string;
-  quoteType: string;
-  symbol: string;
-  index: string;
-  score: number;
-  typeDisp: string;
-  longname: string;
-  isYahooFinance: boolean;
 }
 
 interface TimeZone {
@@ -95,7 +86,7 @@ interface Price {
   adjclose: number;
 }
 
-interface HistoricalDataDto {
+export interface HistoricalDataDto {
   prices: Price[];
   isPending: boolean;
   firstTradeDate: Date;
