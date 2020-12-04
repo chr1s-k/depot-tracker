@@ -18,7 +18,7 @@ import {
 import { URLS } from '@chris-k-software/api-interfaces';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
 import { map } from 'rxjs/operators';
-import clone from 'ramda/src/clone';
+import * as clone from 'ramda/src/clone';
 import { isUndefined } from 'util';
 import { Quote } from '@angular/compiler';
 
