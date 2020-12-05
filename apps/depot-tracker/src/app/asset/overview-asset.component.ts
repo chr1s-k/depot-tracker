@@ -9,12 +9,13 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSort, Sort } from '@angular/material/sort';
-import { Asset, AssetService } from './asset.service';
+import { AssetService } from './asset.service';
 import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
 import { Subscription } from 'rxjs';
 import { CurrencyPipe } from '@angular/common';
 import { ColumnTypes } from '../shared/column-types';
+import { Asset } from './asset.class';
 
 interface OverviewColumn {
   header: string;

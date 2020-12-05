@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Asset, AssetService } from './asset.service';
+import { AssetService } from './asset.service';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -8,6 +8,7 @@ import {
 import { AssetDto, CreateAssetDto } from '@chris-k-software/api-interfaces';
 import { DeleteResult } from 'typeorm';
 import SpyInstance = jest.SpyInstance;
+import { Asset } from './asset.class';
 
 describe('AssetService', () => {
   let service: AssetService;

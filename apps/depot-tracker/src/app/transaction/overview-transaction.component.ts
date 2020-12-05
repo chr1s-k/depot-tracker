@@ -9,10 +9,11 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort, Sort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
-import { Asset, AssetService } from '../asset/asset.service';
+import { AssetService } from '../asset/asset.service';
 import { Transaction } from './transaction.service';
 import { CurrencyPipe, Location } from '@angular/common';
 import { ColumnTypes } from '../shared/column-types';
+import { Asset } from '../asset/asset.class';
 
 interface OverviewTransactionColumn {
   displayName: string;
