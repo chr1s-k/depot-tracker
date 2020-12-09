@@ -25,7 +25,7 @@ export class CreateTransactionComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  form: FormGroup;
+  form!: FormGroup;
   readonly fields: Record<keyof CreateTransactionDto, CsInputDefinition> = {
     assetId: {
       control: new FormControl({ value: '', disabled: true }, [

@@ -40,7 +40,7 @@ interface InputElement {
 export class CreateAssetComponent implements OnInit {
   constructor(private assetService: AssetService, private location: Location) {}
 
-  form: FormGroup;
+  form!: FormGroup;
   readonly fields: Record<keyof CreateAssetDto, CsInputDefinition> = {
     name: {
       control: new FormControl('', [

@@ -16,6 +16,10 @@ import { Subscription } from 'rxjs';
 import { CurrencyPipe } from '@angular/common';
 import { ColumnTypes } from '../shared/column-types';
 import { Asset } from './asset.class';
+import {
+  MessageTypeEnum,
+  NotificationService,
+} from '../shared/notification/notification.service';
 
 interface OverviewColumn {
   header: string;
@@ -29,6 +33,7 @@ interface OverviewColumn {
   templateUrl: './overview-asset.component.html',
   styleUrls: ['./overview-asset.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NotificationService],
 })
 export class OverviewAssetComponent
   implements OnInit, AfterViewInit, OnDestroy {
@@ -36,10 +41,11 @@ export class OverviewAssetComponent
     private assetService: AssetService,
     private router: Router,
     private currencyPipe: CurrencyPipe,
+    public notificationService: NotificationService,
     private ref: ChangeDetectorRef
   ) {}
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
   data: Asset[] = [];
 
   subscriptions: Subscription[] = [];
@@ -178,7 +184,7 @@ export class OverviewAssetComponent
   }
 
   private sortData(sort: Sort): void {
-    let sortFct: (a, b) => -1 | 1 | 0;
+    let sortFct: (a: any, b: any) => -1 | 1 | 0;
     if (sort.direction === 'asc') {
       sortFct = (a, b) => {
         if (a[sort.active] === b[sort.active]) return 0;
@@ -227,6 +233,7 @@ export class OverviewAssetComponent
   diagramOptionsTypes(): unknown {
     const legendData = this.data.map((asset) => asset.type);
     let data = this.data.reduce((acc, val) => {
+      // @ts-ignore
       acc[val.type] = (acc[val.type] || 0) + val.value;
       return acc;
     }, {});

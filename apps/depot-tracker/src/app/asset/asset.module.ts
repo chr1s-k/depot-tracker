@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AssetService } from './asset.service';
+import { NotificationModule } from '../shared/notification/notification.module';
 
 @NgModule({
   declarations: [CreateAssetComponent, OverviewAssetComponent],
@@ -31,6 +32,7 @@ import { AssetService } from './asset.service';
       echarts: () => import('echarts'),
     }),
     MatAutocompleteModule,
+    NotificationModule,
   ],
   providers: [DatePipe, CurrencyPipe, AssetService],
 })

@@ -1,0 +1,30 @@
+<ng-container *ngIf="messages$ | async as messages">
+  <div
+    [id]="'message_cont_' + message_idx"
+    *ngFor="let message of messages; let message_idx = index"
+    [ngClass]="{
+      info: message.type === MessageTypes.info,
+      error: message.type === MessageTypes.error,
+      success: message.type === MessageTypes.success
+    }"
+  >
+    <div>
+      <p
+        [id]="'message_' + message_idx + '_text_' + text_idx"
+        *ngFor="let text of message.texts; let text_idx = index"
+      >
+        {{ text }}
+      </p>
+    </div>
+    <div>
+      <button
+        [id]="'button_' + message_idx"
+        (click)="onCloseMessage(message)"
+        mat-icon-button
+        aria-label="Button to close message"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-container>

@@ -9,9 +9,9 @@ import {
 import { URLS } from '@chris-k-software/api-interfaces';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
 import { map } from 'rxjs/operators';
-import * as clone from 'ramda/src/clone';
 import { Quote } from '@angular/compiler';
 import { Asset } from './asset.class';
+import { clone } from 'ramda';
 
 @Injectable({
   providedIn: 'root',

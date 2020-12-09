@@ -38,7 +38,7 @@ export class OverviewTransactionComponent
     private location: Location
   ) {}
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
   data: Transaction[] = [];
 
   readonly columnTypes = ColumnTypes;
@@ -87,8 +87,14 @@ export class OverviewTransactionComponent
   ngOnInit(): void {
     this.subscriptions.push(
       this.assetService.assets$.subscribe((assets) => {
-        const assetId = +this.route.snapshot.paramMap.get('id');
-        this.data = this.extractTableData(assets, assetId);
+        const assetId = this.route.snapshot.paramMap.get('id');
+        if (assetId != null) {
+          this.data = this.extractTableData(assets, +assetId);
+        } else {
+          throw new Error(
+            'assetId was null, but expected to be a number string'
+          );
+        }
       })
     );
     this.assetService.getAll().subscribe();
@@ -126,27 +132,27 @@ export class OverviewTransactionComponent
     }
   }
 
-  private sortData(sort: Sort): void {
-    let sortFct: (a, b) => -1 | 1 | 0;
+  private sortFctFactory(sort: Sort): (a: any, b: any) => -1 | 1 | 0 {
     if (sort.direction === 'asc') {
-      sortFct = (a, b) => {
+      return (a, b) => {
         if (a[sort.active] === b[sort.active]) return 0;
         return a[sort.active] > b[sort.active] ? 1 : -1;
       };
     } else if (sort.direction === 'desc') {
-      sortFct = (a, b) => {
+      return (a, b) => {
         if (a[sort.active] === b[sort.active]) return 0;
         return a[sort.active] > b[sort.active] ? -1 : 1;
       };
     } else {
-      sortFct = () => 0;
+      return () => 0;
     }
-    this.data.sort(sortFct);
-    this.data = [...this.data];
   }
 
   ngAfterViewInit(): void {
-    this.sort.sortChange.subscribe((sort: Sort) => this.sortData(sort));
+    this.sort.sortChange.subscribe((sort: Sort) => {
+      this.data.sort(this.sortFctFactory(sort));
+      this.data = [...this.data];
+    });
   }
 
   ngOnDestroy(): void {

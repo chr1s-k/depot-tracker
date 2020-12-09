@@ -47,6 +47,8 @@
     "@nestjs/typeorm": "^7.1.4",
     "@ngxs/store": "^3.7.0",
     "@nrwl/angular": "10.3.3",
+    "@types/echarts": "^4.9.2",
+    "@types/ramda": "^0.27.32",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "echarts": "^4.9.0",
