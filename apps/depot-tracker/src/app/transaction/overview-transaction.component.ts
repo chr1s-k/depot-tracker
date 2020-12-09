@@ -97,7 +97,6 @@ export class OverviewTransactionComponent
         }
       })
     );
-    this.assetService.getAll().subscribe();
   }
 
   private extractTableData(assets: Asset[], assetId: number) {

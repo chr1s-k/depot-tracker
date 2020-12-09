@@ -168,7 +168,6 @@ export class OverviewAssetComponent
         this.ref.markForCheck();
       })
     );
-    this.assetService.getAll().subscribe();
   }
 
   ngAfterViewInit(): void {

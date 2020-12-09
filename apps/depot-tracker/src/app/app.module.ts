@@ -13,6 +13,8 @@ import { TransactionModule } from './transaction/transaction.module';
 
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { NgxsModule } from '@ngxs/store';
+import { environment } from '../environments/environment';
 
 registerLocaleData(localeDe);
 
@@ -25,6 +27,7 @@ registerLocaleData(localeDe);
     LayoutModule,
     AssetModule,
     TransactionModule,
+    NgxsModule.forRoot([], { developmentMode: !environment.production }),
     RouterModule.forRoot([...assetRoutes, ...transactionRoutes], {
       relativeLinkResolution: 'corrected',
     }),
