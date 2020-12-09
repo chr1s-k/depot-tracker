@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { VERSION } from '../environments/version';
 
 @Component({
   selector: 'chris-k-software-root',
@@ -7,5 +8,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  constructor() {}
+  constructor() {
+    if (VERSION) {
+      console.log('Hash:', VERSION.hash);
+    } else {
+      console.warn('No hash found.');
+    }
+  }
 }
