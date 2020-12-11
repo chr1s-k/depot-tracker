@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TransactionModule } from './transaction.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxsModule } from '@ngxs/store';
 
 describe('OverviewTransactionComponent', () => {
   let component: OverviewTransactionComponent;
@@ -15,8 +16,9 @@ describe('OverviewTransactionComponent', () => {
       imports: [
         HttpClientTestingModule,
         RouterTestingModule,
-        TransactionModule,
         BrowserAnimationsModule,
+        TransactionModule,
+        NgxsModule.forRoot(),
       ],
     }).compileComponents();
   });

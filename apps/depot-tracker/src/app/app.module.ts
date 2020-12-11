@@ -15,6 +15,8 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { NgxsModule } from '@ngxs/store';
 import { environment } from '../environments/environment';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 registerLocaleData(localeDe);
 
@@ -25,12 +27,14 @@ registerLocaleData(localeDe);
     HttpClientModule,
     BrowserAnimationsModule,
     LayoutModule,
-    AssetModule,
     TransactionModule,
     NgxsModule.forRoot([], { developmentMode: !environment.production }),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
     RouterModule.forRoot([...assetRoutes, ...transactionRoutes], {
       relativeLinkResolution: 'corrected',
     }),
+    AssetModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },

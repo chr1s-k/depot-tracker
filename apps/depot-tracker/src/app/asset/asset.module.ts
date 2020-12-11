@@ -14,6 +14,8 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AssetService } from './asset.service';
 import { NotificationModule } from '../shared/notification/notification.module';
+import { NgxsModule } from '@ngxs/store';
+import { AssetState } from './asset.state';
 
 @NgModule({
   declarations: [CreateAssetComponent, OverviewAssetComponent],
@@ -33,6 +35,7 @@ import { NotificationModule } from '../shared/notification/notification.module';
     }),
     MatAutocompleteModule,
     NotificationModule,
+    NgxsModule.forFeature([AssetState]),
   ],
   providers: [DatePipe, CurrencyPipe, AssetService],
 })

@@ -5,6 +5,8 @@ import { AssetService } from './asset.service';
 import { Location } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, filter, mergeMap } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
+import { AssetCreate } from './asset.actions';
 
 enum INPUT_TYPE {
   INPUT = 'input',
@@ -38,7 +40,11 @@ interface InputElement {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateAssetComponent implements OnInit {
-  constructor(private assetService: AssetService, private location: Location) {}
+  constructor(
+    private assetService: AssetService,
+    private store: Store,
+    private location: Location
+  ) {}
 
   form!: FormGroup;
   readonly fields: Record<keyof CreateAssetDto, CsInputDefinition> = {
@@ -131,7 +137,7 @@ export class CreateAssetComponent implements OnInit {
       this.fields.name.element.filteredList$ = this.fields.name.control.valueChanges.pipe(
         debounceTime(300),
         filter((val: string) => val.length > 0),
-        mergeMap((v) => this.assetService.symbolTypeahead(v))
+        mergeMap((v) => this.assetService.symbolTypeahead$(v))
       );
     }
   }
@@ -148,7 +154,7 @@ export class CreateAssetComponent implements OnInit {
   }
 
   onCreateAsset() {
-    this.assetService.create(this.form.value).subscribe(
+    this.store.dispatch(new AssetCreate(this.form.value)).subscribe(
       () => this.location.back(),
       (e) => console.error(e)
     );

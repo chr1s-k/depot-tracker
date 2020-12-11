@@ -8,12 +8,13 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort, Sort } from '@angular/material/sort';
-import { Subscription } from 'rxjs';
-import { AssetService } from '../asset/asset.service';
+import { Observable, Subscription } from 'rxjs';
 import { Transaction } from './transaction.service';
 import { CurrencyPipe, Location } from '@angular/common';
 import { ColumnTypes } from '../shared/column-types';
 import { Asset } from '../asset/asset.class';
+import { Select } from '@ngxs/store';
+import { AssetState } from '../asset/asset.state';
 
 interface OverviewTransactionColumn {
   displayName: string;
@@ -31,7 +32,6 @@ interface OverviewTransactionColumn {
 export class OverviewTransactionComponent
   implements OnInit, AfterViewInit, OnDestroy {
   constructor(
-    private assetService: AssetService,
     private router: Router,
     private route: ActivatedRoute,
     private currencyPipe: CurrencyPipe,
@@ -82,11 +82,13 @@ export class OverviewTransactionComponent
     },
   };
 
+  @Select(AssetState.getAssets) assets$: Observable<Asset[]>;
+
   subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.assetService.assets$.subscribe((assets) => {
+      this.assets$.subscribe((assets) => {
         const assetId = this.route.snapshot.paramMap.get('id');
         if (assetId != null) {
           this.data = this.extractTableData(assets, +assetId);

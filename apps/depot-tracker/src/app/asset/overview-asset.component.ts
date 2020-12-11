@@ -12,14 +12,14 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { AssetService } from './asset.service';
 import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CurrencyPipe } from '@angular/common';
 import { ColumnTypes } from '../shared/column-types';
 import { Asset } from './asset.class';
-import {
-  MessageTypeEnum,
-  NotificationService,
-} from '../shared/notification/notification.service';
+import { NotificationService } from '../shared/notification/notification.service';
+import { Select, Store } from '@ngxs/store';
+import { AssetState } from './asset.state';
+import { AssetDelete } from './asset.actions';
 
 interface OverviewColumn {
   header: string;
@@ -39,6 +39,7 @@ export class OverviewAssetComponent
   implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private assetService: AssetService,
+    private store: Store,
     private router: Router,
     private currencyPipe: CurrencyPipe,
     public notificationService: NotificationService,
@@ -47,6 +48,8 @@ export class OverviewAssetComponent
 
   @ViewChild(MatSort) sort!: MatSort;
   data: Asset[] = [];
+
+  @Select(AssetState.getAssets) assets$: Observable<Asset[]>;
 
   subscriptions: Subscription[] = [];
 
@@ -163,7 +166,7 @@ export class OverviewAssetComponent
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.assetService.assets$.subscribe((data) => {
+      this.assets$.subscribe((data) => {
         this.data = data;
         this.ref.markForCheck();
       })
@@ -212,7 +215,7 @@ export class OverviewAssetComponent
   }
 
   removeAsset(asset: Asset) {
-    this.assetService.delete(asset.id).subscribe();
+    this.store.dispatch(new AssetDelete(asset));
   }
 
   ngOnDestroy(): void {
