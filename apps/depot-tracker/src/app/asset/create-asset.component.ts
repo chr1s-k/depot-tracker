@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CreateAssetDto, Quote } from '@chris-k-software/api-interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AssetService } from './asset.service';
 import { Location } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, filter, mergeMap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { AssetCreate } from './asset.actions';
+import { YahooService } from './yahoo.service';
 
 enum INPUT_TYPE {
   INPUT = 'input',
@@ -41,7 +41,7 @@ interface InputElement {
 })
 export class CreateAssetComponent implements OnInit {
   constructor(
-    private assetService: AssetService,
+    private yahooService: YahooService,
     private store: Store,
     private location: Location
   ) {}
@@ -137,7 +137,7 @@ export class CreateAssetComponent implements OnInit {
       this.fields.name.element.filteredList$ = this.fields.name.control.valueChanges.pipe(
         debounceTime(300),
         filter((val: string) => val.length > 0),
-        mergeMap((v) => this.assetService.symbolTypeahead$(v))
+        mergeMap((v) => this.yahooService.symbolTypeahead$(v))
       );
     }
   }

@@ -14,7 +14,6 @@ describe('AssetService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [],
     });
     service = TestBed.inject(AssetService);
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -28,7 +27,6 @@ describe('AssetService', () => {
     expect(service).toHaveProperty('create$');
     expect(service).toHaveProperty('delete$');
     expect(service).toHaveProperty('all$');
-    expect(service).toHaveProperty('symbolTypeahead$');
   });
 
   it('should create asset and publish', () => {
@@ -76,18 +74,5 @@ describe('AssetService', () => {
 
     expect(reqs).toHaveLength(1);
     expect(reqs[0].request.method).toEqual('GET');
-  });
-
-  it('should get symbol typeahead', () => {
-    service.symbolTypeahead$('random').subscribe();
-
-    const reqs = httpTestingController.match((req) =>
-      req.url.includes('ckdepot/v1/asset/symbol/typeahead')
-    );
-
-    expect(reqs).toHaveLength(1);
-    expect(reqs[0].request.method).toEqual('GET');
-    expect(reqs[0].request.params.has('q')).toEqual(true);
-    expect(reqs[0].request.params.get('q')).toEqual('random');
   });
 });

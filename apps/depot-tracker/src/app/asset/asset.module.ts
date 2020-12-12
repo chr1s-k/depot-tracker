@@ -16,6 +16,7 @@ import { AssetService } from './asset.service';
 import { NotificationModule } from '../shared/notification/notification.module';
 import { NgxsModule } from '@ngxs/store';
 import { AssetState } from './asset.state';
+import { YahooService } from './yahoo.service';
 
 @NgModule({
   declarations: [CreateAssetComponent, OverviewAssetComponent],
@@ -37,6 +38,6 @@ import { AssetState } from './asset.state';
     NotificationModule,
     NgxsModule.forFeature([AssetState]),
   ],
-  providers: [DatePipe, CurrencyPipe, AssetService],
+  providers: [DatePipe, CurrencyPipe, AssetService, YahooService],
 })
 export class AssetModule {}
