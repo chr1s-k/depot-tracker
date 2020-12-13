@@ -3,10 +3,12 @@ import { CreateAssetDto, Quote } from '@chris-k-software/api-interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, filter, mergeMap } from 'rxjs/operators';
-import { Store } from '@ngxs/store';
-import { AssetCreate } from './asset.actions';
+import { debounceTime, filter, mergeMap, take } from 'rxjs/operators';
+import { Select, Store } from '@ngxs/store';
+import { AssetCreate, AssetCreateKeep } from './asset.actions';
 import { YahooService } from './yahoo.service';
+import { AssetState } from './asset.state';
+import { isDefined } from 'class-validator';
 
 enum INPUT_TYPE {
   INPUT = 'input',
@@ -20,7 +22,6 @@ interface CsInputDefinition {
   errorInfo?: string;
   element: AutocompleteElement | DropdownElement | InputElement;
 }
-
 interface AutocompleteElement {
   type: INPUT_TYPE.AUTOCOMPLETE;
   filteredList$: Observable<unknown>;
@@ -45,6 +46,10 @@ export class CreateAssetComponent implements OnInit {
     private store: Store,
     private location: Location
   ) {}
+
+  @Select(AssetState.getCreateAssetState) createAssetState$: Observable<
+    CreateAssetDto
+  >;
 
   form!: FormGroup;
   readonly fields: Record<keyof CreateAssetDto, CsInputDefinition> = {
@@ -130,6 +135,15 @@ export class CreateAssetComponent implements OnInit {
   ngOnInit(): void {
     this.setupForm();
     this.setupTypeahead();
+    this.createAssetState$
+      .pipe(
+        filter((value) => isDefined(value)),
+        take(1)
+      )
+      .subscribe((value) => this.form.reset(value));
+    this.form.valueChanges.subscribe((value) =>
+      this.store.dispatch(new AssetCreateKeep(value))
+    );
   }
 
   private setupForm() {

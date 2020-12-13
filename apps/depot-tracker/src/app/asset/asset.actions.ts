@@ -14,3 +14,8 @@ export class AssetDelete {
 export class AssetGet {
   static readonly type = '[ASSET USER] Get Assets';
 }
+
+export class AssetCreateKeep {
+  static readonly type = '[ASSET USER] Get Assets';
+  constructor(public createAssetState: CreateAssetDto) {}
+}

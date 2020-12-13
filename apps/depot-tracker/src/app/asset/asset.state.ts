@@ -2,12 +2,19 @@ import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { Asset } from './asset.class';
 import { AssetService } from './asset.service';
-import { AssetCreate, AssetDelete, AssetGet } from './asset.actions';
+import {
+  AssetCreate,
+  AssetCreateKeep,
+  AssetDelete,
+  AssetGet,
+} from './asset.actions';
 import { map } from 'rxjs/operators';
+import { CreateAssetDto } from '@chris-k-software/api-interfaces';
 
 export class AssetStateModel {
   assets: Asset[];
   highlight: Asset[];
+  createAssetState: CreateAssetDto;
 }
 
 @State<AssetStateModel>({
@@ -15,6 +22,7 @@ export class AssetStateModel {
   defaults: {
     assets: [],
     highlight: [],
+    createAssetState: undefined,
   },
 })
 @Injectable()
@@ -29,6 +37,11 @@ export class AssetState implements NgxsOnInit {
   @Selector([AssetState])
   static getAssets(state: AssetStateModel) {
     return state.assets;
+  }
+
+  @Selector([AssetState])
+  static getCreateAssetState(state: AssetStateModel) {
+    return state.createAssetState;
   }
 
   @Selector([AssetState])
@@ -89,5 +102,13 @@ export class AssetState implements NgxsOnInit {
     return this.assetService
       .all$()
       .pipe(map((assets) => patchState({ assets: assets })));
+  }
+
+  @Action(AssetCreateKeep)
+  keep(
+    { patchState }: StateContext<AssetStateModel>,
+    { createAssetState }: AssetCreateKeep
+  ) {
+    patchState({ createAssetState });
   }
 }
