@@ -128,8 +128,12 @@ export class CreateAssetComponent implements OnInit {
   readonly inputType = INPUT_TYPE;
 
   ngOnInit(): void {
-    this.form = new FormGroup(this.mapFieldsToControls());
+    this.setupForm();
     this.setupTypeahead();
+  }
+
+  private setupForm() {
+    this.form = new FormGroup(this.mapFieldsToControls());
   }
 
   private setupTypeahead() {
