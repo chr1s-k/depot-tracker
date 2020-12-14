@@ -17,6 +17,7 @@ import { NgxsModule } from '@ngxs/store';
 import { environment } from '../environments/environment';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
 registerLocaleData(localeDe);
 
@@ -26,14 +27,15 @@ registerLocaleData(localeDe);
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    LayoutModule,
-    TransactionModule,
-    NgxsModule.forRoot([], { developmentMode: !environment.production }),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
     RouterModule.forRoot([...assetRoutes, ...transactionRoutes], {
       relativeLinkResolution: 'corrected',
     }),
+    NgxsModule.forRoot([], { developmentMode: !environment.production }),
+    NgxsStoragePluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
+    NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
+    LayoutModule,
+    TransactionModule,
     AssetModule,
   ],
   providers: [

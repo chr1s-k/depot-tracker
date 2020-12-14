@@ -135,26 +135,34 @@ export class CreateAssetComponent implements OnInit {
   ngOnInit(): void {
     this.setupForm();
     this.setupTypeahead();
-    this.createAssetState$
-      .pipe(
-        filter((value) => isDefined(value)),
-        take(1)
-      )
-      .subscribe((value) => this.form.reset(value));
-    this.form.valueChanges.subscribe((value) =>
-      this.store.dispatch(new AssetCreateKeep(value))
-    );
+    this.fillInState();
+    this.attachStateKeep();
+  }
+
+  private attachStateKeep() {
+    this.form.valueChanges.subscribe((formvalue) => {
+      this.store.dispatch(new AssetCreateKeep(formvalue));
+    });
   }
 
   private setupForm() {
     this.form = new FormGroup(this.mapFieldsToControls());
   }
 
+  private fillInState() {
+    this.createAssetState$
+      .pipe(
+        filter((value) => isDefined(value)),
+        take(1)
+      )
+      .subscribe((value) => this.form.reset(value));
+  }
+
   private setupTypeahead() {
     if ('filteredList$' in this.fields.name.element) {
       this.fields.name.element.filteredList$ = this.fields.name.control.valueChanges.pipe(
         debounceTime(300),
-        filter((val: string) => val.length > 0),
+        filter((val: string) => val != null && val.length > 0),
         mergeMap((v) => this.yahooService.symbolTypeahead$(v))
       );
     }
@@ -187,5 +195,9 @@ export class CreateAssetComponent implements OnInit {
     this.fields.description.control.setValue(
       `${option.exchange} ${option.quoteType} ${option.symbol}`
     );
+  }
+
+  onReset() {
+    this.form.reset();
   }
 }

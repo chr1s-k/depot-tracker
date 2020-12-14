@@ -48,6 +48,7 @@
     "@nestjs/typeorm": "^7.1.4",
     "@ngxs/devtools-plugin": "^3.7.1",
     "@ngxs/logger-plugin": "^3.7.1",
+    "@ngxs/storage-plugin": "^3.7.1",
     "@ngxs/store": "^3.7.0",
     "@nrwl/angular": "10.3.3",
     "@types/echarts": "^4.9.2",

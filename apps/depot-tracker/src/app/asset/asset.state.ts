@@ -30,7 +30,6 @@ export class AssetState implements NgxsOnInit {
   constructor(private assetService: AssetService) {}
 
   ngxsOnInit({ dispatch }: StateContext<AssetStateModel>): void {
-    console.log('State initialized, now getting assets');
     dispatch(new AssetGet());
   }
 
@@ -69,8 +68,8 @@ export class AssetState implements NgxsOnInit {
     return this.assetService.create$(createAssetDto).pipe(
       map((newAsset) =>
         patchState({
-          assets: [...[newAsset], ...state.assets],
-          highlight: [...[newAsset]],
+          assets: [newAsset, ...state.assets],
+          highlight: [newAsset],
         })
       )
     );
@@ -86,9 +85,7 @@ export class AssetState implements NgxsOnInit {
       map((deleteResult) => {
         if (deleteResult.affected === 1) {
           patchState({
-            assets: [
-              ...state.assets.filter((curAsset) => curAsset.id !== asset.id),
-            ],
+            assets: state.assets.filter((curAsset) => curAsset.id !== asset.id),
           });
         } else {
           throw new Error('Asset could not be removed.');
@@ -101,7 +98,7 @@ export class AssetState implements NgxsOnInit {
   all({ patchState }: StateContext<AssetStateModel>) {
     return this.assetService
       .all$()
-      .pipe(map((assets) => patchState({ assets: assets })));
+      .pipe(map((assets) => patchState({ assets })));
   }
 
   @Action(AssetCreateKeep)

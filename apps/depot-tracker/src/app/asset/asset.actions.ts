@@ -16,6 +16,6 @@ export class AssetGet {
 }
 
 export class AssetCreateKeep {
-  static readonly type = '[ASSET USER] Get Assets';
+  static readonly type = '[ASSET USER] Keep asset create state';
   constructor(public createAssetState: CreateAssetDto) {}
 }
