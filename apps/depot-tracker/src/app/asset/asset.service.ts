@@ -9,7 +9,6 @@ import {
 } from '@chris-k-software/api-interfaces';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
 import { map } from 'rxjs/operators';
-import { Quote } from '@angular/compiler';
 import { Asset } from './asset.class';
 
 @Injectable({
@@ -42,11 +41,5 @@ export class AssetService {
       .pipe(
         map((assetDtos) => assetDtos.map((assetDto) => new Asset(assetDto)))
       );
-  }
-
-  symbolTypeahead$(q: string): Observable<Quote[]> {
-    const url = this.prefix + URLS.assetSymbolTypeahedV1;
-    const params = new HttpParams().set('q', q);
-    return this.http.get<Quote[]>(url, { params });
   }
 }
