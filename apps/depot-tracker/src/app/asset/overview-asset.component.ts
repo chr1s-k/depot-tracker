@@ -177,10 +177,6 @@ export class OverviewAssetComponent
     this.sort.sortChange.subscribe((sort: Sort) => this.sortData(sort));
   }
 
-  navigateToAssetCreate() {
-    this.router.navigate([ASSET_ROUTE_PATHS.assetCreate]);
-  }
-
   keepKeyOrder() {
     return 0;
   }
@@ -216,6 +212,14 @@ export class OverviewAssetComponent
 
   removeAsset(asset: Asset) {
     this.store.dispatch(new AssetDelete(asset));
+  }
+
+  navigateToAssetCreate() {
+    this.router.navigate([ASSET_ROUTE_PATHS.assetCreate]);
+  }
+
+  editAsset(asset: Asset) {
+    this.router.navigate([ASSET_ROUTE_PATHS.assetEdit, asset.id]);
   }
 
   ngOnDestroy(): void {

@@ -12,6 +12,10 @@ export const assetRoutes: Routes = [
     component: CreateAssetComponent,
   },
   {
+    path: ASSET_ROUTE_PATHS.assetEdit + '/:id',
+    component: CreateAssetComponent,
+  },
+  {
     path:
       ASSET_ROUTE_PATHS.asset + '/:id/' + TRANSACTION_ROUTE_PATHS.transaction,
     component: OverviewTransactionComponent,
