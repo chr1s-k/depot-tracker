@@ -1,0 +1,11 @@
+version: "3.5"
+services:
+  mysql:
+    build:
+      context: .
+      dockerfile: mysql.Dockerfile
+    ports:
+      - 3306:3306
+#    command: --init-file /docker-entrypoint-initdb.d/init.sql
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=catch=Me=If=You=Can?!
