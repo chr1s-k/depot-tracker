@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { CreateAssetComponent } from './create-asset.component';
+import { HandleAssetComponent } from './handle-asset.component';
 import { OverviewAssetComponent } from './overview-asset.component';
 import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
@@ -10,14 +10,14 @@ import { AssetResolver } from './asset.resolver';
 export const assetRoutes: Routes = [
   {
     path: ASSET_ROUTE_PATHS.assetCreate,
-    component: CreateAssetComponent,
+    component: HandleAssetComponent,
   },
   {
     resolve: {
       asset: AssetResolver,
     },
     path: ASSET_ROUTE_PATHS.assetEdit + '/:id',
-    component: CreateAssetComponent,
+    component: HandleAssetComponent,
   },
   {
     path:

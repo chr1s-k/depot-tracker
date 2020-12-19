@@ -9,8 +9,9 @@ import { AssetCreate, AssetCreateKeep } from './asset.actions';
 import { YahooService } from './yahoo.service';
 import { AssetState } from './asset.state';
 import { isDefined } from 'class-validator';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { keepKeyOrder } from '../shared/helper';
+import { Asset } from './asset.class';
 
 enum INPUT_TYPE {
   INPUT = 'input',
@@ -38,16 +39,17 @@ interface InputElement {
 
 @Component({
   selector: 'cs-create-asset',
-  templateUrl: './create-asset.component.html',
-  styleUrls: ['./create-asset.component.scss'],
+  templateUrl: './handle-asset.component.html',
+  styleUrls: ['./handle-asset.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateAssetComponent implements OnInit {
+export class HandleAssetComponent implements OnInit {
   constructor(
     private yahooService: YahooService,
     private store: Store,
     private location: Location,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   @Select(AssetState.getCreateAssetState) createAssetState$: Observable<
@@ -137,16 +139,32 @@ export class CreateAssetComponent implements OnInit {
 
   ngOnInit(): void {
     this.setupForm();
-    this.setupTypeahead();
-    // TODO: Handle edit and create properly
-    const asset = this.route.snapshot.data['asset'];
-    console.log('asset', asset);
-    if (asset) {
-      this.form.reset(asset);
-    } else {
-      this.fillInAssetCreateState();
+    this.setupTypeaheads();
+
+    if (this.isEditAssetMode()) {
+      this.fillAssetToEdit();
+    } else if (this.isCreateAssetMode()) {
+      this.fillCreateState();
       this.attachStateKeep();
+    } else {
+      throw new Error('Must be edit or create mode');
     }
+  }
+
+  private fillAssetToEdit() {
+    this.form.reset(this.getAssetFromRouter());
+  }
+
+  private isCreateAssetMode() {
+    return this.router.url.includes('create');
+  }
+
+  private isEditAssetMode() {
+    return this.getAssetFromRouter() != undefined;
+  }
+
+  private getAssetFromRouter(): Asset | undefined {
+    return this.route.snapshot.data['asset'];
   }
 
   private attachStateKeep() {
@@ -159,7 +177,7 @@ export class CreateAssetComponent implements OnInit {
     this.form = new FormGroup(this.mapFieldsToControls());
   }
 
-  private fillInAssetCreateState() {
+  private fillCreateState() {
     this.createAssetState$
       .pipe(
         filter((value) => isDefined(value)),
@@ -168,7 +186,7 @@ export class CreateAssetComponent implements OnInit {
       .subscribe((value) => this.form.reset(value));
   }
 
-  private setupTypeahead() {
+  private setupTypeaheads() {
     if ('filteredList$' in this.fields.name.element) {
       this.fields.name.element.filteredList$ = this.fields.name.control.valueChanges.pipe(
         debounceTime(300),

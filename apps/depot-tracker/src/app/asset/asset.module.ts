@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { CreateAssetComponent } from './create-asset.component';
+import { HandleAssetComponent } from './handle-asset.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +19,7 @@ import { AssetState } from './asset.state';
 import { YahooService } from './yahoo.service';
 
 @NgModule({
-  declarations: [CreateAssetComponent, OverviewAssetComponent],
+  declarations: [HandleAssetComponent, OverviewAssetComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,

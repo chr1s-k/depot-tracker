@@ -1,15 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateAssetComponent } from './create-asset.component';
+import { HandleAssetComponent } from './handle-asset.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AssetModule } from './asset.module';
 import { NgxsModule } from '@ngxs/store';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
 
-describe('CreateAssetComponent', () => {
-  let component: CreateAssetComponent;
-  let fixture: ComponentFixture<CreateAssetComponent>;
+describe('HandleAssetComponent', () => {
+  let component: HandleAssetComponent;
+  let fixture: ComponentFixture<HandleAssetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,12 +21,19 @@ describe('CreateAssetComponent', () => {
         AssetModule,
         NgxsModule.forRoot(),
       ],
-      declarations: [],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: { data: { asset: {} } },
+          },
+        },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateAssetComponent);
+    fixture = TestBed.createComponent(HandleAssetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
