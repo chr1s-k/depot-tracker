@@ -16,7 +16,7 @@ import { Observable, Subscription } from 'rxjs';
 import { CurrencyPipe } from '@angular/common';
 import { ColumnTypes } from '../shared/column-types';
 import { Asset } from './asset.class';
-import { NotificationService } from '../shared/notification/notification.service';
+import { NotificationService } from '../shared/notification.service';
 import { Select, Store } from '@ngxs/store';
 import { AssetState } from './asset.state';
 import { AssetDelete } from './asset.actions';

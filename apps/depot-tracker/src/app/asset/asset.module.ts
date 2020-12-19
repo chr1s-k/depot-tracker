@@ -13,7 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AssetService } from './asset.service';
-import { NotificationModule } from '../shared/notification/notification.module';
+import { NotificationModule } from '../shared/notification.module';
 import { NgxsModule } from '@ngxs/store';
 import { AssetState } from './asset.state';
 import { YahooService } from './yahoo.service';
