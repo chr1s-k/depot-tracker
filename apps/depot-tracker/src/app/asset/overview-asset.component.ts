@@ -20,6 +20,7 @@ import { NotificationService } from '../shared/notification/notification.service
 import { Select, Store } from '@ngxs/store';
 import { AssetState } from './asset.state';
 import { AssetDelete } from './asset.actions';
+import { keepKeyOrder } from '../shared/helper';
 
 interface OverviewColumn {
   header: string;
@@ -139,6 +140,8 @@ export class OverviewAssetComponent
     },
   };
 
+  keepKeyOrder = keepKeyOrder;
+
   displayedColumns(): string[] {
     const displayedDataColumns = Object.entries(this.columns)
       .filter((column) => column[1].isVisible)
@@ -165,6 +168,10 @@ export class OverviewAssetComponent
   }
 
   ngOnInit(): void {
+    this.subscribeToAssets();
+  }
+
+  private subscribeToAssets() {
     this.subscriptions.push(
       this.assets$.subscribe((data) => {
         this.data = data;
@@ -177,12 +184,8 @@ export class OverviewAssetComponent
     this.sort.sortChange.subscribe((sort: Sort) => this.sortData(sort));
   }
 
-  keepKeyOrder() {
-    return 0;
-  }
-
   private sortData(sort: Sort): void {
-    let sortFct: (a: any, b: any) => -1 | 1 | 0;
+    let sortFct: (a: unknown, b: unknown) => -1 | 1 | 0;
     if (sort.direction === 'asc') {
       sortFct = (a, b) => {
         if (a[sort.active] === b[sort.active]) return 0;
@@ -194,10 +197,11 @@ export class OverviewAssetComponent
         return a[sort.active] > b[sort.active] ? -1 : 1;
       };
     } else {
-      sortFct = () => 0;
+      sortFct = () => {
+        return 0;
+      };
     }
-    this.data.sort(sortFct);
-    this.data = [...this.data];
+    this.data = [...this.data].sort(sortFct);
   }
 
   goToAssetTransaction(asset: Asset) {

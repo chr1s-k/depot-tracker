@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Logger,
+  Param,
   ParseIntPipe,
   Post,
   Query,
@@ -34,10 +35,16 @@ export class AssetController {
     return this.assetService.delete(id);
   }
 
-  @Get(URLS.assetGetAllV1)
+  @Get(URLS.assetGetV1)
   getAll(): Promise<AssetEntity[]> {
     this.log.verbose(`Getting all assets.`);
     return this.assetService.getAll();
+  }
+
+  @Get(URLS.assetGetV1 + '/:id')
+  getById(@Param('id', ParseIntPipe) id: AssetId): Promise<AssetEntity> {
+    this.log.verbose(`Getting asset for id ${id}.`);
+    return this.assetService.getById(id);
   }
 
   @Get(URLS.assetDetailsV1)

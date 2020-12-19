@@ -9,6 +9,8 @@ import { AssetCreate, AssetCreateKeep } from './asset.actions';
 import { YahooService } from './yahoo.service';
 import { AssetState } from './asset.state';
 import { isDefined } from 'class-validator';
+import { ActivatedRoute } from '@angular/router';
+import { keepKeyOrder } from '../shared/helper';
 
 enum INPUT_TYPE {
   INPUT = 'input',
@@ -44,7 +46,8 @@ export class CreateAssetComponent implements OnInit {
   constructor(
     private yahooService: YahooService,
     private store: Store,
-    private location: Location
+    private location: Location,
+    private route: ActivatedRoute
   ) {}
 
   @Select(AssetState.getCreateAssetState) createAssetState$: Observable<
@@ -135,8 +138,15 @@ export class CreateAssetComponent implements OnInit {
   ngOnInit(): void {
     this.setupForm();
     this.setupTypeahead();
-    this.fillInState();
-    this.attachStateKeep();
+    // TODO: Handle edit and create properly
+    const asset = this.route.snapshot.data['asset'];
+    console.log('asset', asset);
+    if (asset) {
+      this.form.reset(asset);
+    } else {
+      this.fillInAssetCreateState();
+      this.attachStateKeep();
+    }
   }
 
   private attachStateKeep() {
@@ -149,7 +159,7 @@ export class CreateAssetComponent implements OnInit {
     this.form = new FormGroup(this.mapFieldsToControls());
   }
 
-  private fillInState() {
+  private fillInAssetCreateState() {
     this.createAssetState$
       .pipe(
         filter((value) => isDefined(value)),
@@ -168,9 +178,7 @@ export class CreateAssetComponent implements OnInit {
     }
   }
 
-  keepKeyOrder() {
-    return 0;
-  }
+  keepKeyOrder = keepKeyOrder;
 
   private mapFieldsToControls() {
     return Object.entries(this.fields).reduce(

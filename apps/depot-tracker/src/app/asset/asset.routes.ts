@@ -5,6 +5,7 @@ import { ASSET_ROUTE_PATHS } from './asset.routes.constants';
 import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.constants';
 import { OverviewTransactionComponent } from '../transaction/overview-transaction.component';
 import { CreateTransactionComponent } from '../transaction/create-transaction.component';
+import { AssetResolver } from './asset.resolver';
 
 export const assetRoutes: Routes = [
   {
@@ -12,6 +13,9 @@ export const assetRoutes: Routes = [
     component: CreateAssetComponent,
   },
   {
+    resolve: {
+      asset: AssetResolver,
+    },
     path: ASSET_ROUTE_PATHS.assetEdit + '/:id',
     component: CreateAssetComponent,
   },

@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AssetModule } from './asset.module';
 import { NgxsModule } from '@ngxs/store';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CreateAssetComponent', () => {
   let component: CreateAssetComponent;
@@ -15,6 +16,7 @@ describe('CreateAssetComponent', () => {
       imports: [
         HttpClientTestingModule,
         BrowserAnimationsModule,
+        RouterTestingModule,
         AssetModule,
         NgxsModule.forRoot(),
       ],

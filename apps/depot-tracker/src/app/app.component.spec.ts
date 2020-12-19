@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LayoutModule } from './layout/layout.module';
@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
       imports: [
@@ -18,7 +18,7 @@ describe('AppComponent', () => {
         NgxsModule.forRoot(),
       ],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);

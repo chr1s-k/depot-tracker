@@ -34,8 +34,15 @@ export class AssetService {
     return this.http.delete<DeleteResult>(url, { params });
   }
 
+  getById$(id: AssetId): Observable<Asset> {
+    const url = this.prefix + URLS.assetGetV1 + '/' + id;
+    return this.http
+      .get<AssetDto>(url)
+      .pipe(map((assetDto) => new Asset(assetDto)));
+  }
+
   all$(): Observable<Asset[]> {
-    const url = this.prefix + URLS.assetGetAllV1;
+    const url = this.prefix + URLS.assetGetV1;
     return this.http
       .get<AssetDto[]>(url)
       .pipe(

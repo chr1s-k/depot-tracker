@@ -22,6 +22,10 @@ export class AssetService {
     return this.assetRepository.find({ relations: ['transactions'] });
   }
 
+  getById(id: AssetId): Promise<AssetEntity> {
+    return this.assetRepository.findOne(id, { relations: ['transactions'] });
+  }
+
   create(createAssetDto: CreateAssetDto): Promise<AssetEntity> {
     return this.assetRepository.createAsset(createAssetDto);
   }

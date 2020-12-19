@@ -4,6 +4,7 @@ import { TransactionService } from './transaction.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreateTransactionDto } from '@chris-k-software/api-interfaces';
 import { ActivatedRoute } from '@angular/router';
+import { keepKeyOrder } from '../shared/helper';
 
 interface CsInputDefinition {
   control: FormControl;
@@ -66,9 +67,7 @@ export class CreateTransactionComponent implements OnInit {
     );
   }
 
-  keepKeyOrder() {
-    return 0;
-  }
+  keepKeyOrder = keepKeyOrder;
 
   private mapFieldsToControls() {
     return Object.entries(this.fields).reduce(
