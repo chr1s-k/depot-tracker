@@ -9,25 +9,28 @@ export class SpinnerService {
   private isVisibleSubject = new BehaviorSubject<boolean>(false);
   isVisible$ = this.isVisibleSubject.asObservable();
 
-  show(): void {
+  private show(): void {
     this.isVisibleSubject.next(true);
   }
 
-  hide(): void {
+  private hide(): void {
     this.isVisibleSubject.next(false);
   }
 
   showLoaderOp<T>(): MonoTypeOperatorFunction<T> {
-    return tap(this.show);
+    return tap(() => this.show());
   }
 
   showLoaderAutoHideOp<T>(): MonoTypeOperatorFunction<T> {
     return <T>(source: Observable<T>) => {
-      return source.pipe(this.showLoaderOp(), finalize(this.hide));
+      return source.pipe(
+        this.showLoaderOp(),
+        finalize(() => this.hide())
+      );
     };
   }
 
   hideLoaderOp<T>(): MonoTypeOperatorFunction<T> {
-    return tap(this.hide);
+    return tap(() => this.hide());
   }
 }
