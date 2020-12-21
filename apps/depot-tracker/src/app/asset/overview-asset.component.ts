@@ -21,6 +21,7 @@ import { Select, Store } from '@ngxs/store';
 import { AssetState } from './asset.state';
 import { AssetDelete } from './asset.actions';
 import { keepKeyOrder } from '../shared/helper';
+import { SpinnerService } from '../shared/spinner.service';
 
 interface OverviewColumn {
   header: string;
@@ -44,6 +45,7 @@ export class OverviewAssetComponent
     private router: Router,
     private currencyPipe: CurrencyPipe,
     public notificationService: NotificationService,
+    private spinner: SpinnerService,
     private ref: ChangeDetectorRef
   ) {}
 

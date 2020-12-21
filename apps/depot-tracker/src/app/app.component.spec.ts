@@ -5,6 +5,7 @@ import { LayoutModule } from './layout/layout.module';
 import { AssetModule } from './asset/asset.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
+import { SpinnerModule } from './shared/spinner.module';
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -13,6 +14,7 @@ describe('AppComponent', () => {
       imports: [
         AssetModule,
         HttpClientModule,
+        SpinnerModule,
         LayoutModule,
         RouterTestingModule,
         NgxsModule.forRoot(),

@@ -1,0 +1,20 @@
+@mixin base-fullscreen {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.background {
+  @include base-fullscreen;
+  z-index: 999;
+  background: gray;
+  opacity: 50%;
+}
+
+.spinner-container {
+  @include base-fullscreen;
+  z-index: 1000;
+}

@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { SpinnerModule } from './shared/spinner.module';
 
 registerLocaleData(localeDe);
 
@@ -37,6 +38,7 @@ registerLocaleData(localeDe);
     LayoutModule,
     TransactionModule,
     AssetModule,
+    SpinnerModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
