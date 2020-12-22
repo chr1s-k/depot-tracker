@@ -12,6 +12,10 @@ import { isDefined } from 'class-validator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { keepKeyOrder } from '../shared/helper';
 import { Asset } from './asset.class';
+import {
+  MessageTypeEnum,
+  NotificationService,
+} from '../shared/notification.service';
 
 enum INPUT_TYPE {
   INPUT = 'input',
@@ -49,7 +53,8 @@ export class HandleAssetComponent implements OnInit {
     private store: Store,
     private location: Location,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private notification: NotificationService
   ) {}
 
   @Select(AssetState.getCreateAssetState) createAssetState$: Observable<
@@ -137,6 +142,8 @@ export class HandleAssetComponent implements OnInit {
 
   readonly inputType = INPUT_TYPE;
 
+  keepKeyOrder = keepKeyOrder;
+
   ngOnInit(): void {
     this.setupForm();
     this.setupTypeaheads();
@@ -196,8 +203,6 @@ export class HandleAssetComponent implements OnInit {
     }
   }
 
-  keepKeyOrder = keepKeyOrder;
-
   private mapFieldsToControls() {
     return Object.entries(this.fields).reduce(
       (acc, entry) => ({ ...acc, ...{ [entry[0]]: entry[1].control } }),
@@ -207,7 +212,14 @@ export class HandleAssetComponent implements OnInit {
 
   onCreateAsset() {
     this.store.dispatch(new AssetCreate(this.form.value)).subscribe(
-      () => this.location.back(),
+      () => {
+        this.location.back();
+        this.notification.showMessage(
+          MessageTypeEnum.success,
+          4000,
+          'Asset was created successfully'
+        );
+      },
       (e) => console.error(e)
     );
   }

@@ -20,6 +20,8 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { SpinnerModule } from './shared/spinner.module';
 import { SpinnerInterceptor } from './shared/spinner.interceptor';
+import { ErrorHandlingModule } from './shared/errors/error-handling.module';
+import { NotificationModule } from './shared/notification.module';
 
 registerLocaleData(localeDe);
 
@@ -40,6 +42,8 @@ registerLocaleData(localeDe);
     TransactionModule,
     AssetModule,
     SpinnerModule,
+    NotificationModule,
+    ErrorHandlingModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },

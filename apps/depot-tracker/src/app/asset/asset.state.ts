@@ -8,7 +8,7 @@ import {
   AssetDelete,
   AssetGet,
 } from './asset.actions';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { CreateAssetDto } from '@chris-k-software/api-interfaces';
 
 export class AssetStateModel {
@@ -61,7 +61,7 @@ export class AssetState implements NgxsOnInit {
 
   @Action(AssetCreate, { cancelUncompleted: true })
   create(
-    { patchState, getState }: StateContext<AssetStateModel>,
+    { patchState, getState, dispatch }: StateContext<AssetStateModel>,
     { createAssetDto }: AssetCreate
   ) {
     const state = getState();
@@ -71,7 +71,10 @@ export class AssetState implements NgxsOnInit {
           assets: [newAsset, ...state.assets],
           highlight: [newAsset],
         })
-      )
+      ),
+      tap(() => {
+        dispatch(new AssetCreateKeep(undefined));
+      })
     );
   }
 

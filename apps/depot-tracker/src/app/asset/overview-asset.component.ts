@@ -16,7 +16,6 @@ import { Observable, Subscription } from 'rxjs';
 import { CurrencyPipe } from '@angular/common';
 import { ColumnTypes } from '../shared/column-types';
 import { Asset } from './asset.class';
-import { NotificationService } from '../shared/notification.service';
 import { Select, Store } from '@ngxs/store';
 import { AssetState } from './asset.state';
 import { AssetDelete } from './asset.actions';
@@ -35,7 +34,6 @@ interface OverviewColumn {
   templateUrl: './overview-asset.component.html',
   styleUrls: ['./overview-asset.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NotificationService],
 })
 export class OverviewAssetComponent
   implements OnInit, AfterViewInit, OnDestroy {
@@ -44,7 +42,6 @@ export class OverviewAssetComponent
     private store: Store,
     private router: Router,
     private currencyPipe: CurrencyPipe,
-    public notificationService: NotificationService,
     private spinner: SpinnerService,
     private ref: ChangeDetectorRef
   ) {}
