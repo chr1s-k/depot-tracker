@@ -22,6 +22,7 @@ import { SpinnerModule } from './shared/spinner.module';
 import { SpinnerInterceptor } from './shared/spinner.interceptor';
 import { ErrorHandlingModule } from './shared/errors/error-handling.module';
 import { NotificationModule } from './shared/notification.module';
+import { AuthModule } from './shared/auth/auth.module';
 
 registerLocaleData(localeDe);
 
@@ -38,6 +39,7 @@ registerLocaleData(localeDe);
     NgxsStoragePluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
     NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
+    AuthModule.forRoot(),
     LayoutModule,
     TransactionModule,
     AssetModule,

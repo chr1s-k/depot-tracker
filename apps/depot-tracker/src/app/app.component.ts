@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { VERSION } from '../environments/version';
+import { AuthService } from './shared/auth/auth.service';
 
 @Component({
   selector: 'chris-k-software-root',
@@ -7,12 +8,15 @@ import { VERSION } from '../environments/version';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-  constructor() {
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
     if (VERSION) {
       console.log('Hash:', VERSION.hash);
     } else {
       console.warn('No hash found.');
     }
+    this.authService.init();
   }
 }
