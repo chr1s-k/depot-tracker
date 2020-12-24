@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.9"
 services:
   mysql:
     build:
@@ -6,6 +6,16 @@ services:
       dockerfile: mysql.Dockerfile
     ports:
       - 3306:3306
-#    command: --init-file /docker-entrypoint-initdb.d/init.sql
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=catch=Me=If=You=Can?!
+  keycloak:
+    build:
+      context: .
+      dockerfile: keycloak.Dockerfile
+    environment:
+      - DB_VENDOR=mysql
+      - DB_DATABASE=keycloakdb
+      - DB_USER=keycloakuser
+      - DB_PASSWORD=keycloakpw
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
