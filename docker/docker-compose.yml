@@ -19,3 +19,10 @@ services:
       - 8080:8080
     depends_on:
       - mysql
+#  jenkins:
+#    image: jenkins/jenkins:lts
+#    ports:
+#      - 8181:8080
+#      - 50000:50000
+#    volumes:
+#      - ./jenkins_home:/var/jenkins_home
