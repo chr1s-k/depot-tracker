@@ -173,6 +173,7 @@ export class OverviewAssetComponent
   private subscribeToAssets() {
     this.subscriptions.push(
       this.assets$.subscribe((data) => {
+        console.log('assets$', data);
         this.data = data;
         this.ref.markForCheck();
       })

@@ -22,6 +22,7 @@ export class TransactionService {
 
   readonly prefix = 'api/';
 
+  // TODO add transaction handling to state store
   create(createTransactionDto: CreateTransactionDto): Observable<Transaction> {
     const url = this.prefix + URLS.transactionCreateV1;
     return this.http

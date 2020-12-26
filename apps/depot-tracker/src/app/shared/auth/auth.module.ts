@@ -16,7 +16,7 @@ export function storageFactory(): OAuthStorage {
 
 @NgModule({
   imports: [HttpClientModule, OAuthModule.forRoot()],
-  providers: [AuthService, AuthGuardWithForcedLogin],
+  providers: [AuthGuardWithForcedLogin, AuthService],
 })
 export class AuthModule {
   static forRoot(): ModuleWithProviders<AuthModule> {

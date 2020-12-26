@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AuthModule } from '../shared/auth/auth.module';
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -17,6 +18,7 @@ describe('TopbarComponent', () => {
         MatToolbarModule,
         MatIconModule,
         MatButtonModule,
+        AuthModule,
         MatMenuModule,
         RouterTestingModule,
       ],

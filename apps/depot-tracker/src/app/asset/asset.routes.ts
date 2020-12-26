@@ -6,6 +6,7 @@ import { TRANSACTION_ROUTE_PATHS } from '../transaction/transaction.routes.const
 import { OverviewTransactionComponent } from '../transaction/overview-transaction.component';
 import { CreateTransactionComponent } from '../transaction/create-transaction.component';
 import { AssetResolver } from './asset.resolver';
+import { AuthGuardWithForcedLogin } from '../shared/auth/auth-guard-with-forced-login.service';
 
 export const assetRoutes: Routes = [
   {
@@ -13,11 +14,11 @@ export const assetRoutes: Routes = [
     component: HandleAssetComponent,
   },
   {
+    path: ASSET_ROUTE_PATHS.assetEdit + '/:id',
+    component: HandleAssetComponent,
     resolve: {
       asset: AssetResolver,
     },
-    path: ASSET_ROUTE_PATHS.assetEdit + '/:id',
-    component: HandleAssetComponent,
   },
   {
     path:
@@ -34,6 +35,8 @@ export const assetRoutes: Routes = [
   {
     path: ASSET_ROUTE_PATHS.asset,
     component: OverviewAssetComponent,
+    // canActivate: [AuthGuardWithForcedLogin],
+    canActivate: [],
   },
   {
     path: '',

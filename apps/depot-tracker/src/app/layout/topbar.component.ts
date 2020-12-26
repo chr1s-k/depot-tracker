@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ASSET_ROUTE_PATHS } from '../asset/asset.routes.constants';
+import { AuthService } from '../shared/auth/auth.service';
+import { Observable } from 'rxjs';
+import { UserInfo } from 'angular-oauth2-oidc';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'cs-topbar',
@@ -9,12 +13,19 @@ import { ASSET_ROUTE_PATHS } from '../asset/asset.routes.constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopbarComponent implements OnInit {
-  constructor(private router: Router) {}
+  userInfo$: Observable<UserInfo>;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  ngOnInit(): void {}
+  constructor(private router: Router, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.userInfo$ = this.authService.userInfo$.pipe(tap(console.log));
+  }
 
   navigateToAssetOverview() {
     this.router.navigate([ASSET_ROUTE_PATHS.asset]);
+  }
+
+  logout() {
+    this.authService.logoutAndRevokeToken();
   }
 }

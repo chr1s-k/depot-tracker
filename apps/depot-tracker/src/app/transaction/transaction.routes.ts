@@ -6,5 +6,7 @@ export const transactionRoutes: Routes = [
   {
     path: TRANSACTION_ROUTE_PATHS.transactionCreate,
     component: CreateTransactionComponent,
+    loadChildren: () =>
+      import('./transaction.module').then((m) => m.TransactionModule),
   },
 ];
