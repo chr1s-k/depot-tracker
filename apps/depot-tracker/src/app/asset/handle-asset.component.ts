@@ -15,7 +15,7 @@ import { Asset } from './asset.class';
 import {
   MessageTypeEnum,
   NotificationService,
-} from '../shared/notification.service';
+} from '../shared/notification/notification.service';
 
 enum INPUT_TYPE {
   INPUT = 'input',

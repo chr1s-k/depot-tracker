@@ -13,7 +13,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AssetService } from './asset.service';
-import { NotificationModule } from '../shared/notification.module';
 import { NgxsModule } from '@ngxs/store';
 import { AssetState } from './asset.state';
 import { YahooService } from './yahoo.service';
@@ -35,7 +34,6 @@ import { YahooService } from './yahoo.service';
       echarts: () => import('echarts'),
     }),
     MatAutocompleteModule,
-    NotificationModule,
     NgxsModule.forFeature([AssetState]),
   ],
   providers: [DatePipe, CurrencyPipe, AssetService, YahooService],

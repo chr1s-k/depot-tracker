@@ -21,7 +21,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { SpinnerModule } from './shared/spinner.module';
 import { SpinnerInterceptor } from './shared/spinner.interceptor';
 import { ErrorHandlingModule } from './shared/errors/error-handling.module';
-import { NotificationModule } from './shared/notification.module';
+import { NotificationModule } from './shared/notification/notification.module';
 import { AuthModule } from './shared/auth/auth.module';
 
 registerLocaleData(localeDe);

@@ -1,5 +1,8 @@
 import { ErrorHandler, Injectable } from '@angular/core';
-import { MessageTypeEnum, NotificationService } from '../notification.service';
+import {
+  MessageTypeEnum,
+  NotificationService,
+} from '../notification/notification.service';
 
 @Injectable({
   providedIn: 'root',

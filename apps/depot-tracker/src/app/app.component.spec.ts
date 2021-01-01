@@ -6,7 +6,7 @@ import { AssetModule } from './asset/asset.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { SpinnerModule } from './shared/spinner.module';
-import { NotificationModule } from './shared/notification.module';
+import { NotificationModule } from './shared/notification/notification.module';
 import { AuthModule } from './shared/auth/auth.module';
 
 describe('AppComponent', () => {
